@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import styles from './Bar.module.css'
-export function Bar() {
+export default function Bar() {
   return (
 
     <div className={styles.bar__content}>

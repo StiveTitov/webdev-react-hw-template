@@ -2,11 +2,11 @@ import Link from 'next/link';
 import styles from './SideBar.module.css'
 import Image from 'next/image';
 
-export function SideBar() {
+export default function SideBar() {
     return (
         <div className={styles.main__sidebar}>
             <div className={styles.sidebar__personal}>
-                <p className="sidebar__personal-name">Sergey.Ivanov</p>
+                <p className={styles.sidebarPersonalName}>Sergey.Ivanov</p>
                 <div className={styles.sidebar__icon}>
                     <Link href="/signin">
                         <svg>

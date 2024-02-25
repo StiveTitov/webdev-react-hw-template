@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import styles from './CenterBlock.module.css'
-export function CenterBlock() {
+export default function CenterBlock() {
     return (
         <div className={styles.mainCenterblock}>
             <div className={styles.centerblock__search}>

@@ -3,7 +3,7 @@ import styles from './MainNavigation.module.css';
 import Image from 'next/image';
 
 
-export function MainNavigation() {
+export default function MainNavigation() {
     return (
         <>
             <nav className={styles.mainNav}>

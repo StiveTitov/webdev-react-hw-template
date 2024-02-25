@@ -1,10 +1,11 @@
-import { MainNavigation } from '@/components/MainNavigation/MainNavigation'
-import { Wrapper } from '@/components/Wrapper/Wrapper'
-import { PageConteiner } from '@/components/PageContainer/PageConteiner'
-import { Main } from '@/components/Main/Main'
-import { CenterBlock } from '@/components/CenterBlock/CenterBlock';
-import { SideBar } from '@/components/SideBar/SideBar';
-import { Bar } from '@/components/Bar/Bar';
+import { MainNavigation } from '@components/MainNavigation'
+import { Wrapper } from '@components/Wrapper'
+import { PageConteiner } from '@/components/PageContainer';
+import { Main } from '@components/Main'
+import { CenterBlock } from '@components/CenterBlock';
+import { SideBar } from '@components/SideBar';
+import { Bar } from '@components/Bar';
+
 
 
 
