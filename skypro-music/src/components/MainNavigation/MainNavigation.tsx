@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './MainNavigation.module.css';
 import Image from 'next/image';
 
@@ -23,19 +24,19 @@ export function MainNavigation() {
                 <div className={styles.nav__menu}>
                     <ul className={styles.menu__list}>
                         <li className={styles.menu__item}>
-                            <a href="#" className={styles.menu__link}>
+                            <Link href="/" className={styles.menu__link}>
                                 Главное
-                            </a>
+                            </Link>
                         </li>
                         <li className={styles.menu__item}>
-                            <a href="#" className={styles.menu__link}>
+                            <Link href="/" className={styles.menu__link}>
                                 Мой плейлист
-                            </a>
+                            </Link>
                         </li>
                         <li className={styles.menu__item}>
-                            <a href="../signin.html" className={styles.menu__link}>
+                            <Link href="/signin" className={styles.menu__link}>
                                 Войти
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './SideBar.module.css'
 import Image from 'next/image';
 
@@ -7,9 +8,11 @@ export function SideBar() {
             <div className={styles.sidebar__personal}>
                 <p className="sidebar__personal-name">Sergey.Ivanov</p>
                 <div className={styles.sidebar__icon}>
-                    <svg>
-                        <use xlinkHref="img/icon/sprite.svg#logout" />
-                    </svg>
+                    <Link href="/signin">
+                        <svg>
+                            <use xlinkHref="img/icon/sprite.svg#logout" />
+                        </svg>
+                    </Link>
                 </div>
             </div>
             <div className={styles.sidebar__block}>
