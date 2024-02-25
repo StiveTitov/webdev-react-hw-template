@@ -1,32 +1,39 @@
 import styles from './MainNavigation.module.css';
+import Image from 'next/image';
 
 
 export function MainNavigation() {
     return (
         <>
             <nav className={styles.mainNav}>
-                <div className="nav__logo logo">
-                    <img className="logo__image" src="img/logo.png" />
+                <div className={styles.nav__logo}>
+                    <Image
+                        className={styles.logo__image}
+                        src="/img/logo.png"
+                        alt="logo"
+                        width={113.33}
+                        height={17}
+                    />
                 </div>
-                <div className="nav__burger burger">
-                    <span className="burger__line" />
-                    <span className="burger__line" />
-                    <span className="burger__line" />
+                <div className={styles.nav__burger}>
+                    <span className={styles.burger__line} />
+                    <span className={styles.burger__line} />
+                    <span className={styles.burger__line} />
                 </div>
-                <div className="nav__menu menu">
-                    <ul className="menu__list">
-                        <li className="menu__item">
-                            <a href="#" className="menu__link">
+                <div className={styles.nav__menu}>
+                    <ul className={styles.menu__list}>
+                        <li className={styles.menu__item}>
+                            <a href="#" className={styles.menu__link}>
                                 Главное
                             </a>
                         </li>
-                        <li className="menu__item">
-                            <a href="#" className="menu__link">
+                        <li className={styles.menu__item}>
+                            <a href="#" className={styles.menu__link}>
                                 Мой плейлист
                             </a>
                         </li>
-                        <li className="menu__item">
-                            <a href="../signin.html" className="menu__link">
+                        <li className={styles.menu__item}>
+                            <a href="../signin.html" className={styles.menu__link}>
                                 Войти
                             </a>
                         </li>
