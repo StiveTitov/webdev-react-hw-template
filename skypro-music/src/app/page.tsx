@@ -15,7 +15,7 @@ function Page() {
     <>
 
 
-      <title>Skypro</title>
+      
 
       <Wrapper>
         <PageConteiner>

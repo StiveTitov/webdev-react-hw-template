@@ -6,7 +6,7 @@ function Signup() {
     return (
 <>
   
-  <title>Skypro</title>
+  
   <div className={styles.wrapper}>
     <div className={styles.containerSignup}>
       <div className={styles.modalBlock}>
