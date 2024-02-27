@@ -7,7 +7,7 @@ import { SideBar } from '@components/SideBar';
 import { Bar } from '@components/Bar';
 
 
-//
+
 
 
 function Page() {
