@@ -9,7 +9,7 @@ function Signin() {
   return (
 
     <>
-      <title>Skypro</title>
+      
       <div className={styles.wrapper}>
         <div className={styles.containerEnter}>
           <div className={styles.modalBlock}>
