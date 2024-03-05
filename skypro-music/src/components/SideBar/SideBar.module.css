@@ -437,6 +437,12 @@
     color: #696969;
   }
   
+.skileton__sidebar{
+  height: 170px;
+    width: 250px;
+    background-color: #313131;
+}
+
   .sidebar__personal {
     display: -webkit-box;
     display: -ms-flexbox;

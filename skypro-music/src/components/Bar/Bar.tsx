@@ -1,8 +1,21 @@
+"use client"
 import classNames from 'classnames'
+
 import styles from './Bar.module.css'
 import { SVG } from '../SVG';
 import { Input } from '../Input';
+import { useEffect, useState } from 'react';
+import { Skileton } from '../Skileton';
 export default function Bar() {
+  const [isLoading, setIsLoaring] = useState<Boolean>(true);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoaring(false);
+    }, 3000)
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [])
   return (
 
     <div className={styles.bar__content}>
@@ -31,34 +44,40 @@ export default function Bar() {
 
             </div>
           </div>
-          <div className={styles.playerTrackPlay}>
-            <div className={styles.trackPlayContain}>
-              <div className={styles.trackPlayImage}>
-                <SVG className={styles.trackPlaySvg} icon="icon-note" />
+          {isLoading ? (
+            <Skileton className={styles.skileton__TrackPlay} />
+          ) : (
+            <div className={styles.playerTrackPlay}>
+              <div className={styles.trackPlayContain}>
+                <div className={styles.trackPlayImage}>
+                  <SVG className={styles.trackPlaySvg} icon="icon-note" />
 
+                </div>
+                <div className={styles.trackPlayAuthor}>
+                  <a className={styles.trackPlayAuthorLink} href="http://">
+                    Ты та...
+                  </a>
+                </div>
+                <div className={styles.trackPlayAlbum}>
+                  <a className={styles.trackPlayAlbumLink} href="http://">
+                    Баста
+                  </a>
+                </div>
               </div>
-              <div className={styles.trackPlayAuthor}>
-                <a className={styles.trackPlayAuthorLink} href="http://">
-                  Ты та...
-                </a>
-              </div>
-              <div className={styles.trackPlayAlbum}>
-                <a className={styles.trackPlayAlbumLink} href="http://">
-                  Баста
-                </a>
+
+              <div className={styles.trackPlayLikeDis}>
+                <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
+                  <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
+
+                </div>
+                <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
+                  <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
+
+                </div>
               </div>
             </div>
-            <div className={styles.trackPlayLikeDis}>
-              <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
-                <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
+          )}
 
-              </div>
-              <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
-                <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
-
-              </div>
-            </div>
-          </div>
         </div>
         <div className={styles.barVolumeBlock}>
           <div className={styles.volumeContent}>

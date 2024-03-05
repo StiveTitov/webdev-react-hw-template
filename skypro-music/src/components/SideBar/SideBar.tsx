@@ -1,9 +1,21 @@
+"use client"
 import Link from 'next/link';
 import styles from './SideBar.module.css'
 import Image from 'next/image';
 import { SVG } from '../SVG';
+import { useEffect, useState } from 'react';
+import { Skileton } from '../Skileton';
 
 export default function SideBar() {
+    const [isLoading, setIsLoaring] = useState<Boolean>(true);
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setIsLoaring(false);
+        }, 3000)
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [])
     return (
         <div className={styles.main__sidebar}>
             <div className={styles.sidebar__personal}>
@@ -19,28 +31,40 @@ export default function SideBar() {
                 <div className={styles.sidebar__list}>
                     <div className={styles.sidebar__item}>
                         <a className={styles.sidebar__link} href="#">
-                            <Image
-                                className={styles.sidebar__img}
-                                src="/img/playlist01.png"
-                                alt="day's playlist"
-                                width={250}
-                                height={170}
-                            />
+                            {isLoading ? (
+                                <Skileton className={styles.skileton__sidebar} />
+                            ) : (
+                                <Image
+                                    className={styles.sidebar__img}
+                                    src="/img/playlist01.png"
+                                    alt="day's playlist"
+                                    width={250}
+                                    height={170}
+                                />
+                            )}
+
                         </a>
                     </div>
                     <div className={styles.sidebar__item}>
                         <a className={styles.sidebar__link} href="#">
-                            <Image
-                                className={styles.sidebar__img}
-                                src="/img/playlist02.png"
-                                alt="day's playlist"
-                                width={250}
-                                height={170}
-                            />
+                            {isLoading ? (
+                                <Skileton className={styles.skileton__sidebar} />
+                            ) : (
+                                <Image
+                                    className={styles.sidebar__img}
+                                    src="/img/playlist02.png"
+                                    alt="day's playlist"
+                                    width={250}
+                                    height={170}
+                                />
+                            )}
                         </a>
                     </div>
                     <div className={styles.sidebar__item}>
                         <a className={styles.sidebar__link} href="#">
+                        {isLoading ? (
+                                <Skileton className={styles.skileton__sidebar} />
+                            ) : (
                             <Image
                                 className={styles.sidebar__img}
                                 src="/img/playlist03.png"
@@ -48,6 +72,7 @@ export default function SideBar() {
                                 width={250}
                                 height={170}
                             />
+                            )}
                         </a>
                     </div>
                 </div>

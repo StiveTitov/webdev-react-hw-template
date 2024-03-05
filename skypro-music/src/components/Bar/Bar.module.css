@@ -664,7 +664,11 @@
     -ms-flex-direction: row;
     flex-direction: row;
   }
-  
+  .skileton__TrackPlay {
+    height: 51px;
+    width: 200px;
+    background-color: #313131;
+  }
   .trackPlayContain {
     width: auto;
     display: -ms-grid;
