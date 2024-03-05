@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from './SideBar.module.css'
 import Image from 'next/image';
+import { SVG } from '../SVG';
 
 export default function SideBar() {
     return (
@@ -9,9 +10,8 @@ export default function SideBar() {
                 <p className={styles.sidebarPersonalName}>Sergey.Ivanov</p>
                 <div className={styles.sidebar__icon}>
                     <Link href="/signin">
-                        <svg>
-                            <use xlinkHref="img/icon/sprite.svg#logout" />
-                        </svg>
+                        <SVG icon="logout" />
+
                     </Link>
                 </div>
             </div>

@@ -25,6 +25,8 @@ button,
 
 ul li {
   list-style: none;
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
 }
 
 html,

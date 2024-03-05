@@ -1,5 +1,7 @@
 import classNames from 'classnames'
 import styles from './Bar.module.css'
+import { SVG } from '../SVG';
+import { Input } from '../Input';
 export default function Bar() {
   return (
 
@@ -9,37 +11,31 @@ export default function Bar() {
         <div className={styles.bar__player}>
           <div className={styles.player__controls}>
             <div className={styles.playerBtnPrev}>
-              <svg className={styles.playerBtnPrevSvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-prev" />
-              </svg>
+              <SVG className={styles.playerBtnPrevSvg} icon="icon-prev" />
+
             </div>
             <div className={classNames(styles.playerBtnPlay, styles._btn)}>
-              <svg className={styles.playerBtnPlaySvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-play" />
-              </svg>
+              <SVG className={styles.playerBtnPlaySvg} icon="icon-play" />
+
             </div>
             <div className={styles.playerBtnNext}>
-              <svg className={styles.playerBtnNextSvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-next" />
-              </svg>
+              <SVG className={styles.playerBtnNextSvg} icon="icon-next" />
+
             </div>
-            <div className={classNames(styles.playerBtnRepeat,styles._btnIcon)}>
-              <svg className={styles.playerBtnRepeatSvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-repeat" />
-              </svg>
+            <div className={classNames(styles.playerBtnRepeat, styles._btnIcon)}>
+              <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />
+
             </div>
-            <div className={classNames(styles.playerBtnShuffle,styles._btnIcon)}>
-              <svg className={styles.playerBtnShuffleSvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-shuffle" />
-              </svg>
+            <div className={classNames(styles.playerBtnShuffle, styles._btnIcon)}>
+              <SVG className={styles.playerBtnShuffleSvg} icon="icon-shuffle" />
+
             </div>
           </div>
           <div className={styles.playerTrackPlay}>
             <div className={styles.trackPlayContain}>
               <div className={styles.trackPlayImage}>
-                <svg className={styles.trackPlaySvg}>
-                  <use xlinkHref="img/icon/sprite.svg#icon-note" />
-                </svg>
+                <SVG className={styles.trackPlaySvg} icon="icon-note" />
+
               </div>
               <div className={styles.trackPlayAuthor}>
                 <a className={styles.trackPlayAuthorLink} href="http://">
@@ -53,15 +49,13 @@ export default function Bar() {
               </div>
             </div>
             <div className={styles.trackPlayLikeDis}>
-              <div className={classNames(styles.trackPlayLike,styles._btnIcon)}>
-                <svg className={styles.trackPlayLikeSvg}>
-                  <use xlinkHref="img/icon/sprite.svg#icon-like" />
-                </svg>
+              <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
+                <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
+
               </div>
-              <div className={classNames(styles.trackPlayDislike,styles._btnIcon)}>
-                <svg className={styles.trackPlayDislikeSvg}>
-                  <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
-                </svg>
+              <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
+                <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
+
               </div>
             </div>
           </div>
@@ -69,16 +63,16 @@ export default function Bar() {
         <div className={styles.barVolumeBlock}>
           <div className={styles.volumeContent}>
             <div className={styles.volumeImage}>
-              <svg className={styles.volumeSvg}>
-                <use xlinkHref="img/icon/sprite.svg#icon-volume" />
-              </svg>
+              <SVG className={styles.volumeSvg} icon="icon-volume" />
+
             </div>
             <div className={styles.volumeProgress}>
-              <input
+              <Input
                 className={styles.volumeProgressLine}
                 type="range"
                 name="range"
               />
+
             </div>
           </div>
         </div>
