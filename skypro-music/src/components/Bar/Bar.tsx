@@ -16,6 +16,7 @@ type BarType = {
   isLoading: boolean,
 }
 
+
 export default function Bar({ currentTrack, isLoading }: BarType) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
