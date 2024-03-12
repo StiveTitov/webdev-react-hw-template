@@ -6,16 +6,11 @@ import { SVG } from '../SVG';
 import { useEffect, useState } from 'react';
 import { Skileton } from '../Skileton';
 
-export default function SideBar() {
-    const [isLoading, setIsLoaring] = useState<Boolean>(true);
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setIsLoaring(false);
-        }, 3000)
-        return () => {
-            clearTimeout(timeout);
-        }
-    }, [])
+
+type SideBarType = { isLoading: boolean }
+export default function SideBar({ isLoading }: SideBarType) {
+
+    
     return (
         <div className={styles.main__sidebar}>
             <div className={styles.sidebar__personal}>
@@ -62,16 +57,16 @@ export default function SideBar() {
                     </div>
                     <div className={styles.sidebar__item}>
                         <a className={styles.sidebar__link} href="#">
-                        {isLoading ? (
+                            {isLoading ? (
                                 <Skileton className={styles.skileton__sidebar} />
                             ) : (
-                            <Image
-                                className={styles.sidebar__img}
-                                src="/img/playlist03.png"
-                                alt="day's playlist"
-                                width={250}
-                                height={170}
-                            />
+                                <Image
+                                    className={styles.sidebar__img}
+                                    src="/img/playlist03.png"
+                                    alt="day's playlist"
+                                    width={250}
+                                    height={170}
+                                />
                             )}
                         </a>
                     </div>

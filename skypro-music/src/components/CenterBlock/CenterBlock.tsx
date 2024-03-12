@@ -6,8 +6,16 @@ import { Search } from '../Search';
 import { SVG } from '../SVG';
 
 import { Playlist } from '../Playlist';
+import { intTrack } from '@/app/api/TrackApi';
 
-export default function CenterBlock() {
+type CenterBlockType = {
+    isLoading: boolean,
+    tracks: intTrack[],
+    setCurrentTrack: (track: intTrack) => void,
+}
+
+export default function CenterBlock({ isLoading, tracks, setCurrentTrack }: CenterBlockType) {
+
     return (
         <div className={styles.mainCenterblock}>
             <Search />
@@ -22,7 +30,7 @@ export default function CenterBlock() {
                         <SVG className={styles.playlistTitle__svg} icon='icon-watch' />
                     </div>
                 </div>
-                <Playlist />
+                <Playlist isLoading={isLoading} tracks={tracks} setCurrentTrack={setCurrentTrack} />
 
             </div>
         </div>
