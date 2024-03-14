@@ -151,7 +151,7 @@ alert("Еще не реализовано")
               {!isLoop ? (
                 <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />
               ) : (
-                <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeaton" />
+                <SVG className={styles.playerBtnRepeatSvgActive} icon="icon-repeat" />
               )}
 
 
