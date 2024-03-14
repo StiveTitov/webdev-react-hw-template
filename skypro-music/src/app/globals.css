@@ -23,8 +23,18 @@ button,
   cursor: pointer;
 }
 
+input[type="range"].styled-slider::-webkit-slider-runnable-track {
+  color: #b672ff;
+}
+input[type="range"]::-webkit-slider-thumb {
+  background: #b672ff;
+   
+}
+
 ul li {
   list-style: none;
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
 }
 
 html,

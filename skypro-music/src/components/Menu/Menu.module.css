@@ -1,5 +1,4 @@
-
-
+  
   
   ._btn-text:hover {
     border-color: #d9b6ff;
@@ -7,7 +6,7 @@
     cursor: pointer;
   }
   
-  ._btnIcon:hover svg {
+  ._btn-icon:hover svg {
     fill: transparent;
     stroke: #acacac;
     cursor: pointer;
@@ -19,14 +18,14 @@
     cursor: pointer;
   }
   
-  ._btnIcon:active svg {
+  ._btn-icon:active svg {
     fill: transparent;
     stroke: #ffffff;
     cursor: pointer;
   }
   
-  ._btnIcon:active .trackPlayLikeSvg,
-  ._btnIcon:active .trackPlayDislikeSvg {
+  ._btn-icon:active .track-play__like-svg,
+  ._btn-icon:active .track-play__dislike-svg {
     fill: #696969;
     stroke: #ffffff;
     cursor: pointer;
@@ -34,7 +33,7 @@
   
   
   
-  .main__nav {
+  .mainNav {
     width: 244px;
     background-color: #181818;
     padding: 20px 0 20px 36px;
@@ -525,10 +524,13 @@
     flex-direction: column;
   }
   
+  .bar__player-progress {
+    width: 100%;
+    height: 5px;
+    background: #2e2e2e;
+  }
   
-  
-  
-  .barPlayerBlock {
+  .bar__player-block {
     height: 73px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -558,7 +560,7 @@
     justify-content: flex-start;
   }
   
-  .barVolumeBlock {
+  .bar__volume-block {
     width: auto;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -580,11 +582,11 @@
     padding: 0 27px 0 31px;
   }
   
-  .playerBtnPrev,
-  .playerBtnPlay,
-  .playerBtnNext,
-  .playerBtnRepeat,
-  .playerBtnShuffle {
+  .player__btn-prev,
+  .player__btn-play,
+  .player__btn-next,
+  .player__btn-repeat,
+  .player__btn-shuffle {
     padding: 5px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -598,7 +600,7 @@
     margin-right: 23px;
   }
   
-  .playerBtnPrevSvg {
+  .player__btn-prev-svg {
     width: 15px;
     height: 14px;
   }
@@ -607,7 +609,7 @@
     margin-right: 23px;
   }
   
-  .playerBtnPlaySvg {
+  .player__btn-play-svg {
     width: 22px;
     height: 20px;
     fill: #d9d9d9;
@@ -618,7 +620,7 @@
     fill: #a53939;
   }
   
-  .playerBtnNextSvg {
+  .player__btn-next-svg {
     width: 15px;
     height: 14px;
     fill: inherit;
@@ -629,14 +631,14 @@
     margin-right: 24px;
   }
   
-  .playerBtnRepeatSvg {
+  .player__btn-repeat-svg {
     width: 18px;
     height: 12px;
     fill: transparent;
     stroke: #696969;
   }
   
-  .playerBtnShuffle {
+  .player__btn-shuffle {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -645,14 +647,14 @@
     align-items: center;
   }
   
-  .playerBtnShuffleSvg {
+  .player__btn-shuffle-svg {
     width: 19px;
     height: 12px;
     fill: transparent;
     stroke: #696969;
   }
   
-  .playerTrackPlay {
+  .player__track-play {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -661,12 +663,8 @@
     -ms-flex-direction: row;
     flex-direction: row;
   }
-  .skileton__TrackPlay {
-    height: 51px;
-    width: 200px;
-    background-color: #313131;
-  }
-  .trackPlayContain {
+  
+  .track-play__contain {
     width: auto;
     display: -ms-grid;
     display: grid;
@@ -678,7 +676,7 @@
     align-items: center;
   }
   
-  .trackPlayImage {
+  .track-play__image {
     width: 51px;
     height: 51px;
     background-color: #313131;
@@ -698,21 +696,21 @@
     grid-area: image;
   }
   
-  .trackPlaySvg {
+  .track-play__svg {
     width: 18px;
     height: 17px;
     fill: transparent;
     stroke: #4e4e4e;
   }
   
-  .trackPlayAuthor {
+  .track-play__author {
     grid-row: 1;
     grid-column: 2;
     grid-area: author;
     min-width: 49px;
   }
   
-  .trackPlayAuthorLink {
+  .track-play__author-link {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -721,14 +719,14 @@
     white-space: nowrap;
   }
   
-  .trackPlayAlbum {
+  .track-play__album {
     grid-row: 2;
     grid-column: 2;
     grid-area: album;
     min-width: 49px;
   }
   
-  .trackPlayAlbumLink {
+  .track-play__album-link {
     font-style: normal;
     font-weight: 400;
     font-size: 13px;
@@ -736,7 +734,7 @@
     color: #ffffff;
   }
   
-  .trackPlayLikeDis {
+  .track-play__like-dis {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -750,30 +748,30 @@
     margin-left: 26%;
   }
   
-  .trackPlayLike,
+  .track-play__like,
   .track-play__dislike {
     padding: 5px;
   }
   
-  .trackPlayLikeSvg {
+  .track-play__like-svg {
     width: 14px;
     height: 12px;
     fill: transparent;
     stroke: #696969;
   }
   
-  .trackPlayDislike {
+  .track-play__dislike {
     margin-left: 28.5px;
   }
   
-  .trackPlayDislikeSvg {
+  .track-play__dislike-svg {
     width: 14.34px;
     height: 13px;
     fill: transparent;
     stroke: #696969;
   }
   
-  .volumeContent {
+  .volume__content {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -789,24 +787,23 @@
     justify-content: end;
   }
   
-  .volumeImage {
+  .volume__image {
     width: 13px;
     height: 18px;
     margin-right: 17px;
   }
   
-  .volumeSvg {
+  .volume__svg {
     width: 13px;
     height: 18px;
     fill: transparent;
   }
   
-  .volumeProgress {
+  .volume__progress {
     width: 109px;
   }
   
-  .volumeProgressLine {
+  .volume__progress-line {
     width: 109px;
   }
-  
   
