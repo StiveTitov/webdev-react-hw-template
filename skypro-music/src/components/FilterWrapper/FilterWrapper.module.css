@@ -58,3 +58,11 @@
   .filter__button:not(:last-child) {
     margin-right: 10px;
   }
+
+  .filterListAuthor {
+  
+    position: absolute;
+    top: 290px;
+    left: 363px;
+    z-index: 2;
+  }
