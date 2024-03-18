@@ -13,9 +13,35 @@ export const authors = [
 
     { id: 5, name: "John Johnson" },
 
-    
+    { id: 6, name: "John Doe" },
 
-    
+    { id: 7, name: "Jane Doe" },
+
+    { id: 8, name: "John Smith" },
+
+    { id: 9, name: "Jane Smith" },
+
+    { id: 10, name: "John Johnson" },
+
+    { id: 11, name: "John Doe" },
+
+    { id: 12, name: "Jane Doe" },
+
+    { id: 13, name: "John Smith" },
+
+    { id: 14, name: "Jane Smith" },
+
+    { id: 15, name: "John Johnson" },
+
+    { id: 16, name: "John Doe" },
+
+    { id: 17, name: "Jane Doe" },
+
+    { id: 18, name: "John Smith" },
+
+    { id: 19, name: "Jane Smith" },
+
+    { id: 10, name: "John Johnson" },
 
 ];
 
