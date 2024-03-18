@@ -17,10 +17,7 @@ export default function Filter({ list, title, isOpen, onClick, top, left }: Filt
         <>
             <div className={classNames(styles.filter__button, styles._btnText)} onClick={onClick}>{title}</div>
             {isOpen && (
-                <FilterMenu top={top} left={left} list={list}/>
-                 
-
-                    
+                <FilterMenu top={top} left={left} list={list}/>              
                  
                 
             )}

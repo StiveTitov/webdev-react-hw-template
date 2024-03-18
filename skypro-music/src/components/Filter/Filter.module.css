@@ -50,11 +50,3 @@
   text-align: left;
   
 }
-
-.filterListAuthor {
-  
-  position: absolute;
-  top: 290px;
-  left: 363px;
-  z-index: 2;
-}
