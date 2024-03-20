@@ -14,6 +14,15 @@ export default function Track({ track, tracks }: TrackType) {
     const { name, author, album, duration_in_seconds } = track;
 
     const dispatch = useAppDispatch();
+
+    // // Определение функции для форматирования длительности аудио
+    function formatDuration(duration_in_seconds: any) {
+        const minutes = Math.floor(duration_in_seconds / 60);
+        const seconds = Math.floor(duration_in_seconds % 60);
+        const formattedSeconds = seconds.toString().padStart(2, "0");
+        return `${minutes}:${formattedSeconds}`;
+    }
+
     return (
         <>
             <div onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))} className={styles.playlist__item}>
@@ -40,7 +49,7 @@ export default function Track({ track, tracks }: TrackType) {
                     </div>
                     <div className={styles.track__time}>
                         <SVG className={styles.track__timeSvg} icon="icon-like" />
-                        <span className={styles.track__timeText}>{duration_in_seconds}</span>
+                        <span className={styles.track__timeText}>{formatDuration(duration_in_seconds)}</span>
                     </div>
                 </div>
             </div>
