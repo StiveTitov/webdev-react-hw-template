@@ -6,12 +6,12 @@ import { Search } from '../Search';
 import { SVG } from '../SVG';
 
 import { Playlist } from '../Playlist';
-import { intTrack } from '@/app/api/TrackApi';
+import { TracksType } from '@/app/api/TrackApi';
 
 type CenterBlockType = {
     isLoading: boolean,
-    tracks: intTrack[],
-    setCurrentTrack: (track: intTrack) => void,
+    tracks: TracksType[],
+    setCurrentTrack: (track: TracksType) => void,
 }
 
 export default function CenterBlock({ isLoading, tracks, setCurrentTrack }: CenterBlockType) {

@@ -1,22 +1,22 @@
+"use client"
+import { useAppDispatch } from "@/hooks/hooks";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css"
+import { TracksType } from "@/app/api/TrackApi";
+import { setCurrentTrack } from "@/store/features/playlistSlice";
 
 type TrackType = {
-    trackTitle?: string,
-    trackTitleSpan?: string,
-    titleLink?: string,
-    author?: string,
-    authorLink?: string,
-    album?: string,
-    albumLink?: string,
-    timeText?: string,
-    onClick: () => void,
+    track: TracksType,
+    tracks: TracksType[],
 
 }
-export default function Track({ onClick, trackTitle, trackTitleSpan, author, album, timeText }: TrackType) {
+export default function Track({ track, tracks }: TrackType) {
+    const { name, author, album, duration_in_seconds } = track;
+
+    const dispatch = useAppDispatch();
     return (
         <>
-            <div onClick={onClick} className={styles.playlist__item}>
+            <div onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))} className={styles.playlist__item}>
                 <div className={styles.playlist__track}>
                     <div className={styles.track__title}>
                         <div className={styles.track__titleImage}>
@@ -24,7 +24,7 @@ export default function Track({ onClick, trackTitle, trackTitleSpan, author, alb
                         </div>
                         <div className={styles.track__title}>
                             <div className={styles.track__titleLink}>
-                                {trackTitle} <span className={styles.track__titleSpan}>{trackTitleSpan}</span>
+                                {name} <span className={styles.track__titleSpan}>{ }</span>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@ export default function Track({ onClick, trackTitle, trackTitleSpan, author, alb
                     </div>
                     <div className={styles.track__time}>
                         <SVG className={styles.track__timeSvg} icon="icon-like" />
-                        <span className={styles.track__timeText}>{timeText}</span>
+                        <span className={styles.track__timeText}>{duration_in_seconds}</span>
                     </div>
                 </div>
             </div>
