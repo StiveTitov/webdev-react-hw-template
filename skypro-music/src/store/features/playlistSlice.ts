@@ -30,13 +30,18 @@ const playlistSlice = createSlice({
         },
         toggleShuffled: (state) => {
             state.isShuffled = !state.isShuffled;
+            console.log(state.isShuffled)
         },
         togglePlaying: (state) => {
-            state.isPlaying =!state.isPlaying;
+            state.isPlaying = !state.isPlaying;
+            console.log(state.isPlaying)
         },
         setCurrentTrack: (state, action: PayloadAction<SetCurrentTrackType>) => {
             state.currentTrack = action.payload.currentTrack;
             state.tracks = action.payload.tracks;
+            state.isPlaying = true;
+            
+            console.log(state.isPlaying)
             state.shuffledTracks = [...action.payload.tracks].sort(
                 () => 0.5 - Math.random(),
             );
@@ -64,5 +69,12 @@ const playlistSlice = createSlice({
     },
 });
 
-export const { setTracks, toggleShuffled, setCurrentTrack, nextTrack, prevTrack } = playlistSlice.actions;
+export const {
+    setTracks,
+    togglePlaying,
+    toggleShuffled,
+    setCurrentTrack,
+    nextTrack,
+    prevTrack
+} = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;

@@ -1,5 +1,5 @@
 "use client"
-import { useAppDispatch } from "@/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css"
 import { TracksType } from "@/app/api/TrackApi";
@@ -12,7 +12,8 @@ type TrackType = {
 }
 export default function Track({ track, tracks }: TrackType) {
     const { name, author, album, duration_in_seconds } = track;
-
+    const isPlaying = useAppSelector((store) => store.playlist.isPlaying)
+    const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
     const dispatch = useAppDispatch();
 
     // // Определение функции для форматирования длительности аудио
@@ -25,10 +26,16 @@ export default function Track({ track, tracks }: TrackType) {
 
     return (
         <>
+
             <div onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))} className={styles.playlist__item}>
                 <div className={styles.playlist__track}>
                     <div className={styles.track__title}>
                         <div className={styles.track__titleImage}>
+                            {/* Чтобы пометить выбранный трек розовой точкой */}
+                            {currentTrack?.id === track.id && (isPlaying ?
+                                (<span className={styles.pointPulse} ></span>)
+                                : (<span className={styles.point} ></span>))}
+                            {/* на против треков, которые не выбраны, выводится просто иконка ноты */}
                             <SVG className={styles.track__titleSvg} icon="icon-note" />
                         </div>
                         <div className={styles.track__title}>
@@ -52,7 +59,7 @@ export default function Track({ track, tracks }: TrackType) {
                         <span className={styles.track__timeText}>{formatDuration(duration_in_seconds)}</span>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

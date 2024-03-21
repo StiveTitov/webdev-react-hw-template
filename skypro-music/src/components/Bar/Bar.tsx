@@ -10,7 +10,7 @@ import { Skileton } from '../Skileton';
 import { TracksType } from '@/app/api/TrackApi';
 import { ProgressBar } from '../Input';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { nextTrack, prevTrack, toggleShuffled } from '@/store/features/playlistSlice';
+import { nextTrack, prevTrack, togglePlaying, toggleShuffled } from '@/store/features/playlistSlice';
 import { store } from '@/store/store';
 
 
@@ -21,7 +21,8 @@ import { store } from '@/store/store';
 export default function Bar() {
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  ;
+  const isPlaying = useAppSelector((store) => store.playlist.isPlaying)
   const [isLoop, setIsLoop] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -57,7 +58,7 @@ export default function Bar() {
   const handleStart = () => {
     if (audioRef.current) {
       audioRef.current.play();
-      setIsPlaying(true);
+      dispatch(togglePlaying());
     }
 
   };
@@ -66,8 +67,9 @@ export default function Bar() {
   const handleStop = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
+      dispatch(togglePlaying());
     }
+
   };
 
   const handleLoopStart = () => {
@@ -84,13 +86,6 @@ export default function Bar() {
     }
   }
 
-  // // Определение функции для форматирования длительности аудио
-  // function formatDuration(durationSeconds) {
-  //   const minutes = Math.floor(durationSeconds / 60);
-  //   const seconds = Math.floor(durationSeconds % 60);
-  //   const formattedSeconds = seconds.toString().padStart(2, "0");
-  //   return `${minutes}:${formattedSeconds}`;
-  // }
 
 
   // Обработка полосы прокрутки трека
@@ -114,14 +109,16 @@ export default function Bar() {
   //
 
 
-  function ClickOnIcon() {
-    alert("Еще не реализовано")
-  }
+
   // Условие работы кнопки PLAY-PAUSE
+
   const togglePlay = isPlaying ? handleStop : handleStart;
+
+  // Условие работы кнопки LOOP и Shuffle
   const toggleLoop = isLoop ? handleLoopStop : handleLoopStart;
   const dispatch = useAppDispatch();
   const isShuffled = useAppSelector((store) => store.playlist.isShuffled)
+
 
   return (
     <div className={styles.bar__content}>
@@ -134,16 +131,14 @@ export default function Bar() {
       <div className={styles.barPlayerBlock}>
         <div className={styles.bar__player}>
           <div className={styles.player__controls}>
-            <div onClick={()=> dispatch(prevTrack())} className={styles.playerBtnPrev}>
+            <div onClick={() => dispatch(prevTrack())} className={styles.playerBtnPrev}>
               <SVG className={styles.playerBtnPrevSvg} icon="icon-prev" />
 
             </div>
             <div onClick={togglePlay} className={classNames(styles.playerBtnPlay, styles._btn)}>
-              {!isPlaying ? (
-                <SVG className={styles.playerBtnPlaySvg} icon="icon-play" />
-              ) : (
-                <SVG className={styles.playerBtnPlaySvg} icon="icon-pause" />
-              )}
+              {!isPlaying ?
+                (<SVG className={styles.playerBtnPlaySvg} icon="icon-play" />)
+                : (<SVG className={styles.playerBtnPlaySvg} icon="icon-pause" />)}
 
 
             </div>
