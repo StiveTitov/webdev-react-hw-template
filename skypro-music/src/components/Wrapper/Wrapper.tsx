@@ -1,7 +1,7 @@
 import styles from './Wrapper.module.css';
 
-
-export default function Wrapper({ children }) {
+type WrapperType = {children: React.ReactNode}
+export default function Wrapper({ children }:WrapperType) {
     return (
         <div className={styles.wrapper}>{children}</div>
     );

@@ -19,10 +19,12 @@ import { store } from '@/store/store';
 
 
 export default function Bar() {
-  const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  ;
-  const isPlaying = useAppSelector((store) => store.playlist.isPlaying)
+  const dispatch = useAppDispatch();
+  const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
+  const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
+
+  const isShuffled = useAppSelector((store) => store.playlist.isShuffled)
   const [isLoop, setIsLoop] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -32,9 +34,17 @@ export default function Bar() {
 
   // Определение обработчика событий для обновления времени и длительности аудио
   const handleTimeUpdate = () => {
+    
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
       setDuration(audioRef.current.duration);
+      // если текищее время трека равно продолжительности трека (трек проигрался до конца)
+      if (audioRef.current.currentTime === audioRef.current.duration && !isLoop) {
+        // то включить следующий трек
+        console.log("next_track");
+        dispatch(nextTrack())
+      }
+
     }
   };
 
@@ -116,15 +126,12 @@ export default function Bar() {
 
   // Условие работы кнопки LOOP и Shuffle
   const toggleLoop = isLoop ? handleLoopStop : handleLoopStart;
-  const dispatch = useAppDispatch();
-  const isShuffled = useAppSelector((store) => store.playlist.isShuffled)
+
 
 
   return (
     <div className={styles.bar__content}>
       <audio autoPlay controls src={currentTrack?.track_file} ref={audioRef} hidden />
-
-
 
       <ProgressBar duration={duration} currentTime={currentTime} handleSeek={handleSeek} />
 
@@ -140,28 +147,22 @@ export default function Bar() {
                 (<SVG className={styles.playerBtnPlaySvg} icon="icon-play" />)
                 : (<SVG className={styles.playerBtnPlaySvg} icon="icon-pause" />)}
 
-
             </div>
             <div onClick={() => dispatch(nextTrack())} className={styles.playerBtnNext}>
               <SVG className={styles.playerBtnNextSvg} icon="icon-next" />
 
             </div>
             <div onClick={toggleLoop} className={classNames(styles.playerBtnRepeat, styles._btnIcon)}>
-              {!isLoop ? (
-                <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />
-              ) : (
-                <SVG className={styles.playerBtnRepeatSvgActive} icon="icon-repeat" />
-              )}
+              {isLoop ?
+                (<SVG className={styles.playerBtnRepeatSvgActive} icon="icon-repeat" />)
+                : (<SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />)}
 
 
             </div>
             <div onClick={() => dispatch(toggleShuffled())} className={classNames(styles.playerBtnShuffle, styles._btnIcon)}>
-              {isShuffled ? (
-                <SVG className={styles.playerBtnShuffleSvg} icon="icon-shuffle" />
-              ) : (
-                <SVG className={styles.playerBtnShuffleSvgActive} icon="icon-shuffle" />
-              )}
-
+              {isShuffled ?
+                (<SVG className={styles.playerBtnShuffleSvgActive} icon="icon-shuffle" />)
+                : (<SVG className={styles.playerBtnShuffleSvg} icon="icon-shuffle" />)}
 
             </div>
           </div>

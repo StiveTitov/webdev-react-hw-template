@@ -7,23 +7,23 @@ import { CenterBlock } from '@components/CenterBlock';
 import { SideBar } from '@components/SideBar';
 import { Bar } from '@components/Bar';
 import { useEffect, useState } from 'react';
-import { getAllTracks, TrackType } from './api/TrackApi';
+import { getAllTracks, TracksType } from './api/TrackApi';
 
 
 
 
 
 function Page() {
-  const [tracks, setTracks] = useState<TrackType[]>([])
+  const [tracks, setTracks] = useState<TracksType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentTrack, setCurrentTrack] = useState<TrackType | null>(null);
+  
   useEffect(() => {
     getAllTracks().then(response => {
       setTracks(response)
       setIsLoading(false)
     })
   }, [])
-  console.log(currentTrack);
+  
   return (
     <>
 
@@ -34,7 +34,7 @@ function Page() {
         <PageConteiner>
           <Main>
             <MainNavigation />
-            <CenterBlock isLoading={isLoading} tracks={tracks} setCurrentTrack={setCurrentTrack} />
+            <CenterBlock tracks={tracks} />
             <SideBar isLoading={isLoading} />
           </Main>
           <Bar />

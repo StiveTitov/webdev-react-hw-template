@@ -8,13 +8,9 @@ import { SVG } from '../SVG';
 import { Playlist } from '../Playlist';
 import { TracksType } from '@/app/api/TrackApi';
 
-type CenterBlockType = {
-    isLoading: boolean,
-    tracks: TracksType[],
-    setCurrentTrack: (track: TracksType) => void,
-}
+type CenterBlockType = { tracks: TracksType[] };
 
-export default function CenterBlock({ isLoading, tracks, setCurrentTrack }: CenterBlockType) {
+export default function CenterBlock({ tracks }: CenterBlockType) {
 
     return (
         <div className={styles.mainCenterblock}>
@@ -30,7 +26,7 @@ export default function CenterBlock({ isLoading, tracks, setCurrentTrack }: Cent
                         <SVG className={styles.playlistTitle__svg} icon='icon-watch' />
                     </div>
                 </div>
-                <Playlist isLoading={isLoading} tracks={tracks} setCurrentTrack={setCurrentTrack} />
+                <Playlist tracks={tracks} />
 
             </div>
         </div>

@@ -32,7 +32,9 @@ export default function Track({ track, tracks }: TrackType) {
                     <div className={styles.track__title}>
                         <div className={styles.track__titleImage}>
                             {/* Чтобы пометить выбранный трек розовой точкой */}
-                            {currentTrack?.id === track.id && (isPlaying ?
+                            {currentTrack?.id === track.id && 
+                            // И если трек воспроизводится (isPlaying- true)- включить анимацию точки
+                            (isPlaying ?
                                 (<span className={styles.pointPulse} ></span>)
                                 : (<span className={styles.point} ></span>))}
                             {/* на против треков, которые не выбраны, выводится просто иконка ноты */}

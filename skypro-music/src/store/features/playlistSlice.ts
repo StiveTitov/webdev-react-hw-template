@@ -7,6 +7,7 @@ type TrackListType = {
     shuffledTracks: [] | TracksType[],
     currentTrack: null | TracksType,
     isPlaying: boolean,
+    
 };
 
 type SetCurrentTrackType = {
@@ -20,6 +21,7 @@ const initialState: TrackListType = {
     shuffledTracks: [],
     currentTrack: null,
     isPlaying: false,
+    
 };
 const playlistSlice = createSlice({
     name: "playlist",
@@ -30,23 +32,24 @@ const playlistSlice = createSlice({
         },
         toggleShuffled: (state) => {
             state.isShuffled = !state.isShuffled;
-            console.log(state.isShuffled)
+
         },
         togglePlaying: (state) => {
             state.isPlaying = !state.isPlaying;
-            console.log(state.isPlaying)
+
         },
+
         setCurrentTrack: (state, action: PayloadAction<SetCurrentTrackType>) => {
             state.currentTrack = action.payload.currentTrack;
             state.tracks = action.payload.tracks;
             state.isPlaying = true;
-            
-            console.log(state.isPlaying)
+
             state.shuffledTracks = [...action.payload.tracks].sort(
                 () => 0.5 - Math.random(),
             );
         },
         nextTrack: (state) => {
+            state.isPlaying = true;
             const currentTracks = state.isShuffled ? state.shuffledTracks : state.tracks;
             const currentTrackIndex = currentTracks.findIndex((item) => item.id === state.currentTrack?.id);
             const newTrack = currentTracks[currentTrackIndex + 1];
@@ -57,6 +60,7 @@ const playlistSlice = createSlice({
             }
         },
         prevTrack: (state) => {
+            state.isPlaying = true;
             const currentTracks = state.isShuffled ? state.shuffledTracks : state.tracks;
             const currentTrackIndex = currentTracks.findIndex((item) => item.id === state.currentTrack?.id);
             const newTrack = currentTracks[currentTrackIndex - 1];
