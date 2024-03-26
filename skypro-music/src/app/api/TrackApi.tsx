@@ -1,6 +1,5 @@
 
-
-export interface intTrack {
+export type TracksType = {
     album: string,
     author: string,
     duration_in_seconds: string,
@@ -12,14 +11,14 @@ export interface intTrack {
     stared_user: StaredUser[],
     track_file: string,
 }
-interface StaredUser {
+type StaredUser = {
     email: string,
     first_name: string,
     id: number,
     last_name: string,
     usrname: string,
 }
-export function getAllTracks(): Promise<intTrack[]> {
+export function getAllTracks(): Promise<TracksType[]> {
     return fetch("https://skypro-music-api.skyeng.tech/catalog/track/all/", {
         method: "GET",
     })

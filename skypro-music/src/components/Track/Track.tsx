@@ -1,30 +1,48 @@
+"use client"
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css"
+import { TracksType } from "@/app/api/TrackApi";
+import { setCurrentTrack } from "@/store/features/playlistSlice";
 
 type TrackType = {
-    trackTitle?: string,
-    trackTitleSpan?: string,
-    titleLink?: string,
-    author?: string,
-    authorLink?: string,
-    album?: string,
-    albumLink?: string,
-    timeText?: string,
-    onClick: () => void,
+    track: TracksType,
+    tracks: TracksType[],
 
 }
-export default function Track({ onClick, trackTitle, trackTitleSpan, author, album, timeText }: TrackType) {
+export default function Track({ track, tracks }: TrackType) {
+    const { name, author, album, duration_in_seconds } = track;
+    const isPlaying = useAppSelector((store) => store.playlist.isPlaying)
+    const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
+    const dispatch = useAppDispatch();
+
+    // // Определение функции для форматирования длительности аудио
+    function formatDuration(duration_in_seconds: any) {
+        const minutes = Math.floor(duration_in_seconds / 60);
+        const seconds = Math.floor(duration_in_seconds % 60);
+        const formattedSeconds = seconds.toString().padStart(2, "0");
+        return `${minutes}:${formattedSeconds}`;
+    }
+
     return (
         <>
-            <div onClick={onClick} className={styles.playlist__item}>
+
+            <div onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))} className={styles.playlist__item}>
                 <div className={styles.playlist__track}>
                     <div className={styles.track__title}>
                         <div className={styles.track__titleImage}>
+                            {/* Чтобы пометить выбранный трек розовой точкой */}
+                            {currentTrack?.id === track.id && 
+                            // И если трек воспроизводится (isPlaying- true)- включить анимацию точки
+                            (isPlaying ?
+                                (<span className={styles.pointPulse} ></span>)
+                                : (<span className={styles.point} ></span>))}
+                            {/* на против треков, которые не выбраны, выводится просто иконка ноты */}
                             <SVG className={styles.track__titleSvg} icon="icon-note" />
                         </div>
                         <div className={styles.track__title}>
                             <div className={styles.track__titleLink}>
-                                {trackTitle} <span className={styles.track__titleSpan}>{trackTitleSpan}</span>
+                                {name} <span className={styles.track__titleSpan}>{ }</span>
                             </div>
                         </div>
                     </div>
@@ -40,10 +58,10 @@ export default function Track({ onClick, trackTitle, trackTitleSpan, author, alb
                     </div>
                     <div className={styles.track__time}>
                         <SVG className={styles.track__timeSvg} icon="icon-like" />
-                        <span className={styles.track__timeText}>{timeText}</span>
+                        <span className={styles.track__timeText}>{formatDuration(duration_in_seconds)}</span>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

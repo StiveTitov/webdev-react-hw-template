@@ -7,19 +7,24 @@ import { SVG } from '../SVG';
 import { Input, VolumeBar } from '../Input';
 import { useEffect, useRef, useState } from 'react';
 import { Skileton } from '../Skileton';
-import { intTrack } from '@/app/api/TrackApi';
+import { TracksType } from '@/app/api/TrackApi';
 import { ProgressBar } from '../Input';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { nextTrack, prevTrack, togglePlaying, toggleShuffled } from '@/store/features/playlistSlice';
+import { store } from '@/store/store';
 
 
-type BarType = {
-  currentTrack: intTrack,
-  isLoading: boolean,
-}
 
 
-export default function Bar({ currentTrack, isLoading }: BarType) {
+
+
+export default function Bar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const dispatch = useAppDispatch();
+  const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
+  const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
+
+  const isShuffled = useAppSelector((store) => store.playlist.isShuffled)
   const [isLoop, setIsLoop] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -29,9 +34,17 @@ export default function Bar({ currentTrack, isLoading }: BarType) {
 
   // Определение обработчика событий для обновления времени и длительности аудио
   const handleTimeUpdate = () => {
+    
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
       setDuration(audioRef.current.duration);
+      // если текищее время трека равно продолжительности трека (трек проигрался до конца)
+      if (audioRef.current.currentTime === audioRef.current.duration && !isLoop) {
+        // то включить следующий трек
+        console.log("next_track");
+        dispatch(nextTrack())
+      }
+
     }
   };
 
@@ -55,7 +68,7 @@ export default function Bar({ currentTrack, isLoading }: BarType) {
   const handleStart = () => {
     if (audioRef.current) {
       audioRef.current.play();
-      setIsPlaying(true);
+      dispatch(togglePlaying());
     }
 
   };
@@ -64,8 +77,9 @@ export default function Bar({ currentTrack, isLoading }: BarType) {
   const handleStop = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
+      dispatch(togglePlaying());
     }
+
   };
 
   const handleLoopStart = () => {
@@ -82,13 +96,6 @@ export default function Bar({ currentTrack, isLoading }: BarType) {
     }
   }
 
-  // // Определение функции для форматирования длительности аудио
-  // function formatDuration(durationSeconds) {
-  //   const minutes = Math.floor(durationSeconds / 60);
-  //   const seconds = Math.floor(durationSeconds % 60);
-  //   const formattedSeconds = seconds.toString().padStart(2, "0");
-  //   return `${minutes}:${formattedSeconds}`;
-  // }
 
 
   // Обработка полосы прокрутки трека
@@ -112,88 +119,84 @@ export default function Bar({ currentTrack, isLoading }: BarType) {
   //
 
 
-function ClickOnIcon () {
-alert("Еще не реализовано")
-}
+
   // Условие работы кнопки PLAY-PAUSE
+
   const togglePlay = isPlaying ? handleStop : handleStart;
+
+  // Условие работы кнопки LOOP и Shuffle
   const toggleLoop = isLoop ? handleLoopStop : handleLoopStart;
+
+
 
   return (
     <div className={styles.bar__content}>
-      <audio autoPlay controls src={currentTrack.track_file} ref={audioRef} hidden />
-
-
+      <audio autoPlay controls src={currentTrack?.track_file} ref={audioRef} hidden />
 
       <ProgressBar duration={duration} currentTime={currentTime} handleSeek={handleSeek} />
 
       <div className={styles.barPlayerBlock}>
         <div className={styles.bar__player}>
           <div className={styles.player__controls}>
-            <div onClick={ClickOnIcon} className={styles.playerBtnPrev}>
+            <div onClick={() => dispatch(prevTrack())} className={styles.playerBtnPrev}>
               <SVG className={styles.playerBtnPrevSvg} icon="icon-prev" />
 
             </div>
             <div onClick={togglePlay} className={classNames(styles.playerBtnPlay, styles._btn)}>
-              {!isPlaying ? (
-                <SVG className={styles.playerBtnPlaySvg} icon="icon-play" />
-              ) : (
-                <SVG className={styles.playerBtnPlaySvg} icon="icon-pause" />
-              )}
-
+              {!isPlaying ?
+                (<SVG className={styles.playerBtnPlaySvg} icon="icon-play" />)
+                : (<SVG className={styles.playerBtnPlaySvg} icon="icon-pause" />)}
 
             </div>
-            <div onClick={ClickOnIcon} className={styles.playerBtnNext}>
+            <div onClick={() => dispatch(nextTrack())} className={styles.playerBtnNext}>
               <SVG className={styles.playerBtnNextSvg} icon="icon-next" />
 
             </div>
             <div onClick={toggleLoop} className={classNames(styles.playerBtnRepeat, styles._btnIcon)}>
-              {!isLoop ? (
-                <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />
-              ) : (
-                <SVG className={styles.playerBtnRepeatSvg} icon="icon-repeaton" />
-              )}
+              {isLoop ?
+                (<SVG className={styles.playerBtnRepeatSvgActive} icon="icon-repeat" />)
+                : (<SVG className={styles.playerBtnRepeatSvg} icon="icon-repeat" />)}
 
 
             </div>
-            <div onClick={ClickOnIcon} className={classNames(styles.playerBtnShuffle, styles._btnIcon)}>
-              <SVG className={styles.playerBtnShuffleSvg} icon="icon-shuffle" />
+            <div onClick={() => dispatch(toggleShuffled())} className={classNames(styles.playerBtnShuffle, styles._btnIcon)}>
+              {isShuffled ?
+                (<SVG className={styles.playerBtnShuffleSvgActive} icon="icon-shuffle" />)
+                : (<SVG className={styles.playerBtnShuffleSvg} icon="icon-shuffle" />)}
 
             </div>
           </div>
-          {isLoading ? (
-            <Skileton className={styles.skileton__TrackPlay} />
-          ) : (
-            <div className={styles.playerTrackPlay}>
-              <div className={styles.trackPlayContain}>
-                <div className={styles.trackPlayImage}>
-                  <SVG className={styles.trackPlaySvg} icon="icon-note" />
 
-                </div>
-                <div className={styles.trackPlayAuthor}>
-                  <div className={styles.trackPlayAuthorLink} >
-                    {currentTrack.name}
-                  </div>
-                </div>
-                <div className={styles.trackPlayAlbum}>
-                  <div className={styles.trackPlayAlbumLink} >
-                    {currentTrack.author}
-                  </div>
+          <div className={styles.playerTrackPlay}>
+            <div className={styles.trackPlayContain}>
+              <div className={styles.trackPlayImage}>
+                <SVG className={styles.trackPlaySvg} icon="icon-note" />
+
+              </div>
+              <div className={styles.trackPlayAuthor}>
+                <div className={styles.trackPlayAuthorLink} >
+                  {currentTrack?.name}
                 </div>
               </div>
-
-              <div className={styles.trackPlayLikeDis}>
-                <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
-                  <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
-
-                </div>
-                <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
-                  <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
-
+              <div className={styles.trackPlayAlbum}>
+                <div className={styles.trackPlayAlbumLink} >
+                  {currentTrack?.author}
                 </div>
               </div>
             </div>
-          )}
+
+            <div className={styles.trackPlayLikeDis}>
+              <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
+                <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
+
+              </div>
+              <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
+                <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
+
+              </div>
+            </div>
+          </div>
+
 
         </div>
         <div className={styles.barVolumeBlock}>
@@ -203,8 +206,8 @@ alert("Еще не реализовано")
 
             </div>
             <div className={styles.volumeProgress}>
-              
-              <VolumeBar volume={volume} handleVolume={handleVolume}/>
+
+              <VolumeBar volume={volume} handleVolume={handleVolume} />
             </div>
           </div>
         </div>

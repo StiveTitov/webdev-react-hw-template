@@ -1,24 +1,26 @@
 
 import classNames from 'classnames';
 import styles from './Filter.module.css'
+import { FilterMenu } from '../FilterMenu';
 type FilterType = {
     list: Array<{ id: number, name: string }>;
     title: string;
+    top: number;
+    left: number;
     isOpen: boolean;
     onClick: () => void;
 };
 
 
-export default function Filter({ list, title, isOpen, onClick }: FilterType) {
+export default function Filter({ list, title, isOpen, onClick, top, left }: FilterType) {
     return (
         <>
             <div className={classNames(styles.filter__button, styles._btnText)} onClick={onClick}>{title}</div>
-            {isOpen && (<ul>
+            {isOpen && (
+                <FilterMenu top={top} left={left} list={list}/>              
+                 
                 
-                {list.map(item => (
-                    <li key={item.id}>{item.name}</li>
-                ))}
-            </ul>)}
+            )}
         </>
     );
 }
