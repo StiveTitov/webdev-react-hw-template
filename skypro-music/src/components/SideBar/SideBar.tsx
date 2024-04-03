@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { Skileton } from '../Skileton';
 
 
-type SideBarType = { isLoading: boolean }
-export default function SideBar({ isLoading }: SideBarType) {
 
+export default function SideBar() {
+    
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+  
     
     return (
         <div className={styles.main__sidebar}>

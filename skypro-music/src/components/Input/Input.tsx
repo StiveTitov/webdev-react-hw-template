@@ -3,7 +3,7 @@ type ImputType = {
     type: string,
     placeholder?: string,
     name: string,
-    value?: number,
+    value?: number|string,
     min?: string,
     max?: number,
     onChange?: () => void

@@ -1,16 +1,33 @@
+'use client'
 import classNames from 'classnames';
 import styles from './CenterBlock.module.css'
-import { FilterWrapper } from '../FilterWrapper';
+
 
 import { Search } from '../Search';
 import { SVG } from '../SVG';
 
 import { Playlist } from '../Playlist';
-import { TracksType } from '@/app/api/TrackApi';
+import { getAllTracks, TracksType } from '@/app/api/TrackApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { useEffect } from 'react';
+import { setTracks } from '@/store/features/playlistSlice';
+import { FilterWrapper } from '../FilterWrapper/FilterWrapper';
 
-type CenterBlockType = { tracks: TracksType[] };
 
-export default function CenterBlock({ tracks }: CenterBlockType) {
+
+export default function CenterBlock() {
+
+    const dispatch = useAppDispatch();
+    const tracks = useAppSelector((store) => store.playlist.tracks);
+    
+    
+    
+    useEffect(() => {
+      getAllTracks().then(response => {
+        dispatch(setTracks(response));
+        
+      })
+    }, [dispatch])
 
     return (
         <div className={styles.mainCenterblock}>
@@ -26,7 +43,7 @@ export default function CenterBlock({ tracks }: CenterBlockType) {
                         <SVG className={styles.playlistTitle__svg} icon='icon-watch' />
                     </div>
                 </div>
-                <Playlist tracks={tracks} />
+                <Playlist />
 
             </div>
         </div>

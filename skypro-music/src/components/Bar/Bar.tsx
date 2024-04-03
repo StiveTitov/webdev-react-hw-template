@@ -4,11 +4,11 @@ import classNames from 'classnames'
 import styles from './Bar.module.css'
 
 import { SVG } from '../SVG';
-import { Input, VolumeBar } from '../Input';
+import { ProgressBar, VolumeBar } from '../Input';
 import { useEffect, useRef, useState } from 'react';
 import { Skileton } from '../Skileton';
 import { TracksType } from '@/app/api/TrackApi';
-import { ProgressBar } from '../Input';
+
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { nextTrack, prevTrack, togglePlaying, toggleShuffled } from '@/store/features/playlistSlice';
 import { store } from '@/store/store';
@@ -50,7 +50,7 @@ export default function Bar() {
 
 
   // Определение обработчика событий для поиска определенного времени в аудиозаписи
-  const handleSeek = (e) => {
+  const handleSeek = (e:any) => {
     if (audioRef.current) {
       audioRef.current.currentTime = e.target.value;
       setCurrentTime(e.target.value);
@@ -59,7 +59,7 @@ export default function Bar() {
 
   // Определение обработчика событий для громкости аудио
 
-  const handleVolume = (e) => {
+  const handleVolume = (e:any) => {
     setVolume(e.target.value)
 
   };
@@ -131,6 +131,7 @@ export default function Bar() {
 
   return (
     <div className={styles.bar__content}>
+      {/* <audio> Добавляет, воспроизводит и управляет настройками аудиозаписи на веб-странице */}
       <audio autoPlay controls src={currentTrack?.track_file} ref={audioRef} hidden />
 
       <ProgressBar duration={duration} currentTime={currentTime} handleSeek={handleSeek} />
