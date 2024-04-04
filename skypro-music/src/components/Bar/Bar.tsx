@@ -5,7 +5,7 @@ import styles from './Bar.module.css'
 
 import { SVG } from '../SVG';
 import { ProgressBar, VolumeBar } from '../Input';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Skileton } from '../Skileton';
 import { TracksType } from '@/app/api/TrackApi';
 
@@ -34,7 +34,7 @@ export default function Bar() {
 
   // Определение обработчика событий для обновления времени и длительности аудио
   const handleTimeUpdate = () => {
-    
+
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
       setDuration(audioRef.current.duration);
@@ -48,9 +48,14 @@ export default function Bar() {
     }
   };
 
+  const memoizedCallback = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume, audioRef]);
 
   // Определение обработчика событий для поиска определенного времени в аудиозаписи
-  const handleSeek = (e:any) => {
+  const handleSeek = (e: any) => {
     if (audioRef.current) {
       audioRef.current.currentTime = e.target.value;
       setCurrentTime(e.target.value);
@@ -59,7 +64,7 @@ export default function Bar() {
 
   // Определение обработчика событий для громкости аудио
 
-  const handleVolume = (e:any) => {
+  const handleVolume = (e: any) => {
     setVolume(e.target.value)
 
   };
@@ -110,13 +115,20 @@ export default function Bar() {
 
 
   // Обработка полосы громкости трека
+  // useEffect(() => {
+
+  //   if (audioRef.current) {
+  //     audioRef.current.volume = volume / 100;
+  //   }
+  // }, [volume, audioRef]);
+
+  // Обработка полосы громкости трека с помощью useCallback
   useEffect(() => {
 
-    if (audioRef.current) {
-      audioRef.current.volume = volume / 100;
-    }
-  }, [volume, audioRef]);
-  //
+    memoizedCallback();
+    
+  }, [memoizedCallback]);
+
 
 
 

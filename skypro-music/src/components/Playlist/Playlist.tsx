@@ -1,12 +1,10 @@
 'use client'
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Track } from '../Track';
 import styles from './Playlist.module.css'
 import { Skileton } from '../Skileton';
 import { TracksType, getAllTracks } from '@/app/api/TrackApi';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { setTracks } from '@/store/features/playlistSlice';
-import { store } from '@/store/store';
+import { useAppSelector } from '@/hooks/hooks';
 
 type PlaylistType = {
 
