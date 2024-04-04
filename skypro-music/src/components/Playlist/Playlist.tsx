@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Track } from '../Track';
 import styles from './Playlist.module.css'
 import { Skileton } from '../Skileton';
@@ -14,22 +14,29 @@ type PlaylistType = {
 
 }
 export default function Playlist() {
-    
+
     const tracks = useAppSelector((store) => store.playlist.tracks);
-    const filtredTracks = useAppSelector((store)=> store.playlist.filtredTracks);
-console.log(filtredTracks);
-    
-    
-    
+    const filtredTracks = useAppSelector((store) => store.playlist.filtredTracks);
+
+    const memoizedTracks = useMemo(() => {
+        if (filtredTracks.length !== 0) {
+            return filtredTracks;
+        } else {
+            return tracks;
+        }
+    }, [filtredTracks, tracks]);
+
+
 
     return (
         <>
             <div className={styles.content__playlist}>
 
-                {filtredTracks.length !== 0 ? filtredTracks.map((track) => (
+
+
+                {memoizedTracks.map((track) => (
                     <Track key={track.id} track={track} />
-                )) : tracks.map((track) => (
-                    <Track key={track.id} track={track} />))}
+                ))}
 
 
             </div>
