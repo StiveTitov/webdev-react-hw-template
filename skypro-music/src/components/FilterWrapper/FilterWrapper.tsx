@@ -1,24 +1,147 @@
+"use client";
 
-"use client"
-import styles from './FilterWrapper.module.css'
-import { Filter } from "../Filter";
-import { authors, genres, years } from './data';
-import { useState } from 'react';
+import styles from "./FilterWrapper.module.css";
 
-export default function FilterWrapper() {
-    const [activeFilter, setActiveFilter] = useState<null | string>(null);
-    function handleFiltreClick(filterName: string) {
-        setActiveFilter(prev => prev === filterName ? null : filterName);
-    }
-    return (
-        <>
-            <div className={styles.centerblock__filter}>
-                <div className={styles.filter__title}>Искать по:</div>
-                <Filter top={290} left={23} title="исполнителю" list={authors} isOpen={activeFilter === "author"} onClick={() => handleFiltreClick("author")} />
-                <Filter top={290} left={31} title="году выпуска" list={years} isOpen={activeFilter === "year"} onClick={() => handleFiltreClick("year")} />
-                <Filter top={290} left={39} title="жанру" list={genres} isOpen={activeFilter === "genre"} onClick={() => handleFiltreClick("genre")} />
+import { useMemo, useState } from "react";
 
-            </div>
-        </>
+
+import { setFilteredTracks } from "@/store/features/playlistSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { TracksType } from "@/app/api/TrackApi";
+import { FilterButton } from "../FilterButton";
+
+
+type TrackKeys = Pick<Track, "author" | "genre" | "release_date">;
+export type Track = {
+  album: string;
+  author: string;
+  duration_in_seconds: number;
+  genre: string;
+  id: number;
+  logo: null;
+  name: string;
+  release_date: string;
+  stared_user: StaredUser;
+  track_file: string;
+};
+
+type StaredUser = {
+  email: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  username: string;
+};
+
+function getListItem(item: keyof TrackKeys, trackList: TracksType[]|[]) {
+  const listItem: string[] = [];
+  trackList?.forEach((track) => {
+    if (listItem.includes(track[item]) || track[item] === "-") return;
+    listItem.push(track[item]);
+  });
+  return listItem.sort();
+}
+
+const sortedByDate: string[] = [
+  "По умолчанию",
+  "Сначала новые",
+  "Сначала старые",
+];
+
+export function FilterWrapper() {
+  const [isActive, setIsActive] = useState<string | null>();
+
+  function handelActive(title: string) {
+    setIsActive((prev) => (prev === title ? null : title));
+  }
+
+  const tracks = useAppSelector((store) => store.playlist.tracks);
+  const selectedAuthors = useAppSelector(
+    (store) => store.playlist.filterOptions.authors
+  );
+  const selectedGenres = useAppSelector(
+    (store) => store.playlist.filterOptions.genres
+  );
+  const selectedYears = useAppSelector(
+    (store) => store.playlist.filterOptions.years
+  );
+  const dispatch = useAppDispatch();
+
+  const authorsList = getListItem("author", tracks);
+  const genreList =  getListItem("genre", tracks);
+
+  // const uniq = (value, index, array) => array.indexOf(value) === index
+
+  // const artists = tracks
+  //   .map(({ author }) => author ?? 'Неизвестный исполнитель')
+  //   .filter((i) => i)
+  //   .filter(uniq)
+  //   .sort()
+
+  function toggleSelectedAuthors(item: string) {
+    dispatch(
+      setFilteredTracks({
+        authors: selectedAuthors.includes(item)
+          ? selectedAuthors.filter((author) => author !== item)
+          : [...selectedAuthors, item],
+      })
     );
+    
+  }
+
+  function toggleSelectedGenre(item: string) {
+    dispatch(
+      setFilteredTracks({
+        genre: selectedGenres.includes(item)
+          ? selectedGenres.filter((genre) => genre !== item)
+          : [...selectedGenres, item],
+      })
+    );
+    
+  }
+
+  function toggleSelectedYears(item: string) {
+    dispatch(
+      setFilteredTracks({
+        years: selectedYears.includes(item)
+          ? selectedYears.filter((year) => year !== item)
+          : [...selectedYears, item],
+      })
+    );
+    
+  }
+
+
+  return (
+    <div className={styles.centerBlockFilter}>
+      <div className={styles.filterTitle}>Искать по:</div>
+      <FilterButton
+        isOpen={isActive === "исполнителю" ? true : false}
+        list={authorsList}
+        selected={selectedAuthors}
+        counter={selectedAuthors.length}
+        title="исполнителю"
+        toggleSelected={toggleSelectedAuthors}
+        onClick={() => handelActive("исполнителю")}
+      />
+      <FilterButton
+        isOpen={isActive === "году выпуска" ? true : false}
+        list={sortedByDate}
+        title="году выпуска"
+        selected={selectedYears}
+        counter={0}
+        toggleSelected={toggleSelectedYears}
+        onClick={() => handelActive("году выпуска")}
+      />
+      <FilterButton
+        isOpen={isActive === "жанру" ? true : false}
+        list={genreList}
+        title="жанру"
+        selected={selectedGenres}
+        counter={selectedGenres.length}
+        toggleSelected={toggleSelectedGenre}
+        onClick={() => handelActive("жанру")}
+      />
+    </div>
+  );
 }

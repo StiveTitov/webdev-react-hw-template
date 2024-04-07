@@ -18,7 +18,7 @@ type StaredUser = {
     last_name: string,
     usrname: string,
 }
-export function getAllTracks(): Promise<TracksType[]> {
+export async function getAllTracks(): Promise<TracksType[]> {
     return fetch("https://skypro-music-api.skyeng.tech/catalog/track/all/", {
         method: "GET",
     })

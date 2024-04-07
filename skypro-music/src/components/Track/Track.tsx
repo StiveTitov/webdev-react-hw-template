@@ -7,13 +7,14 @@ import { setCurrentTrack } from "@/store/features/playlistSlice";
 
 type TrackType = {
     track: TracksType,
-    tracks: TracksType[],
+    
 
 }
-export default function Track({ track, tracks }: TrackType) {
+export default function Track({ track }: TrackType) {
     const { name, author, album, duration_in_seconds } = track;
     const isPlaying = useAppSelector((store) => store.playlist.isPlaying)
     const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
+    const tracks = useAppSelector((store) => store.playlist.tracks);
     const dispatch = useAppDispatch();
 
     // // Определение функции для форматирования длительности аудио
