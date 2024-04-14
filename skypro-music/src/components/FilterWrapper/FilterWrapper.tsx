@@ -2,7 +2,7 @@
 
 import styles from "./FilterWrapper.module.css";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 
 import { setFilteredTracks } from "@/store/features/playlistSlice";
@@ -70,13 +70,7 @@ export function FilterWrapper() {
   const authorsList = getListItem("author", tracks);
   const genreList =  getListItem("genre", tracks);
 
-  // const uniq = (value, index, array) => array.indexOf(value) === index
-
-  // const artists = tracks
-  //   .map(({ author }) => author ?? 'Неизвестный исполнитель')
-  //   .filter((i) => i)
-  //   .filter(uniq)
-  //   .sort()
+ 
 
   function toggleSelectedAuthors(item: string) {
     dispatch(

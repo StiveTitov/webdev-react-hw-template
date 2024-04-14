@@ -1,7 +1,7 @@
 
 import classNames from 'classnames';
 import styles from './Filter.module.css'
-import { FilterMenu } from '../FilterButton';
+import { FilterButton } from '../FilterButton';
 type FilterType = {
     selected?: string[];
     list: string[];
@@ -20,7 +20,7 @@ export default function Filter({ selected, list, title, isOpen, onClick, top, le
         <>
             <div className={classNames(styles.filter__button, styles._btnText)} onClick={onClick}>{title}</div>
             {isOpen && (
-                <FilterMenu top={top} left={left} list={list} selected={selected} />
+                <FilterButton top={top} left={left} list={list} selected={selected} />
 
             )}
         </>
