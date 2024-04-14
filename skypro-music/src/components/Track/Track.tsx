@@ -10,6 +10,9 @@ type TrackType = {
     
 
 }
+
+
+
 export default function Track({ track }: TrackType) {
     const { name, author, album, duration_in_seconds } = track;
     const isPlaying = useAppSelector((store) => store.playlist.isPlaying)

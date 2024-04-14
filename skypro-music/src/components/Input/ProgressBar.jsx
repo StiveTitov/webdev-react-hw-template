@@ -1,21 +1,16 @@
-'use client'
+"use client";
 
-import  styles from "./ProgressBar.module.css";
+import styles from "./ProgressBar.module.css";
 
-
-
-export default function ProgressBar({duration, currentTime, handleSeek}) {
-  
-
+export default function ProgressBar({ duration, currentTime, handleSeek }) {
   return (
-    <input className={styles.barPlayerProgress}
+    <input
+      className={styles.barPlayerProgress}
       type="range"
       min={0}
       max={duration}
       value={currentTime}
-      
       onChange={handleSeek}
-      
     />
   );
 }
