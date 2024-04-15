@@ -5,12 +5,15 @@ import Image from 'next/image';
 import { SVG } from '../SVG';
 import { useEffect, useState } from 'react';
 import { Skileton } from '../Skileton';
+import { getCategoryList } from '@/app/api/TrackApi';
 
 
 
 export default function SideBar() {
     
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    
   
     
     return (
@@ -27,7 +30,7 @@ export default function SideBar() {
             <div className={styles.sidebar__block}>
                 <div className={styles.sidebar__list}>
                     <div className={styles.sidebar__item}>
-                        <a className={styles.sidebar__link} href="#">
+                        <Link className={styles.sidebar__link} href="tracks/category/1">
                             {isLoading ? (
                                 <Skileton className={styles.skileton__sidebar} />
                             ) : (
@@ -40,10 +43,10 @@ export default function SideBar() {
                                 />
                             )}
 
-                        </a>
+                        </Link>
                     </div>
                     <div className={styles.sidebar__item}>
-                        <a className={styles.sidebar__link} href="#">
+                        <Link className={styles.sidebar__link} href="tracks/category/2">
                             {isLoading ? (
                                 <Skileton className={styles.skileton__sidebar} />
                             ) : (
@@ -55,10 +58,10 @@ export default function SideBar() {
                                     height={170}
                                 />
                             )}
-                        </a>
+                        </Link>
                     </div>
                     <div className={styles.sidebar__item}>
-                        <a className={styles.sidebar__link} href="#">
+                        <Link className={styles.sidebar__link} href="tracks/category/3">
                             {isLoading ? (
                                 <Skileton className={styles.skileton__sidebar} />
                             ) : (
@@ -70,7 +73,7 @@ export default function SideBar() {
                                     height={170}
                                 />
                             )}
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

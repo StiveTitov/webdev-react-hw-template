@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/FilterButton/FilterMenu.tsx"
-  ],
+, "src/components/Input/ProgressBar.jsx"  ],
   "exclude": ["node_modules"]
 }

@@ -1,5 +1,5 @@
 import styles from "./FilterButton.module.css";
-//import { FilterType } from "../../../types.types";
+
 import cn from "classnames";
 
 export type FilterType = {
@@ -8,7 +8,7 @@ export type FilterType = {
   isOpen: boolean;
   selected: string[] | string;
   counter: number | null;
-  toggleSelected?: (item: string) => void; 
+  toggleSelected?: (item: string) => void;
   onClick: () => void;
 }
 

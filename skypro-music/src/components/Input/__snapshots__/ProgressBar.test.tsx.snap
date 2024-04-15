@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Компанент- полосы прогресса корректно отрисовывает разметку с начальными значениями 1`] = `
+<input
+  className="barPlayerProgress"
+  max={100}
+  min={0}
+  onChange={50}
+  type="range"
+  value={0}
+/>
+`;
