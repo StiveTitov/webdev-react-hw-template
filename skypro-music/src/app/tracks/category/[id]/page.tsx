@@ -18,20 +18,7 @@ type CategoryType = {
     }
 }
 
-function isSetText(id: string):string {
-    switch (id) {
-        case "1":
-            return ("Плейлист дня");
 
-        case "2":
-            return ("100 танцевальных хитов");
-
-        case "3":
-            return ("Инди-заряд");
-        default:
-            return ("");
-    }
-}
 
 export default function Category({ params }: CategoryType) {
     const id = params.id;
@@ -51,8 +38,7 @@ export default function Category({ params }: CategoryType) {
         getCategoryTracks(URL).then(response => {
             // Долбаные разработчики засунули список треков в долбанный объект items, приходится  извлекать
             dispatch(setTracks(response.items));
-            const text:string = isSetText(id);
-            setText(text);
+            setText(response.name);
 
 
         })
