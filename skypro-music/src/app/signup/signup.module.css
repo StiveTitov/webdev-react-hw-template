@@ -163,4 +163,6 @@
         -ms-flex-pack: center;
             justify-content: center;
   }
-  
+  .modalErrText{
+color: red;
+  }

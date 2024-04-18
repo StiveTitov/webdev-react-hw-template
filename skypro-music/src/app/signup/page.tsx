@@ -4,19 +4,35 @@ import styles from './signup.module.css'
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Registration, RegistrationType } from '../api/AuthApi';
+import { Registration } from '../api/AuthApi';
+
+type AuthType = {
+  mail: string,
+  password: string,
+  conformedPassword: string,
+}
+
+
 function Signup() {
   //const {login}= useUser();
   const [loginData, setLoginData] = useState({
     mail: "",
     password: "",
+    conformedPassword: "",
   });
 
-  async function setAuth(loginData: RegistrationType) {
-    await Registration(loginData).then((data) => {
-      // login(data.user)
+  const [isConformedPass, setIsConformedPass] = useState(true);
+  const [isEmail, setIsEmail] = useState(true);
 
-    });
+  async function setAuth(event, loginData: AuthType) {
+    event.preventDefault()
+    loginData.mail===""? setIsEmail(false):setIsEmail(true);
+    loginData.password === loginData.conformedPassword ? setIsConformedPass(true) : setIsConformedPass(false)
+    console.log(loginData);
+    // await Registration(loginData).then((data) => {
+    //   // login(data.user)
+
+    // });
   }
 
   function onEmailChange(event) {
@@ -32,6 +48,14 @@ function Signup() {
     setLoginData({
       ...loginData,
       password: event.target.value,
+    });
+  }
+
+  function onConfPasswordChange(event) {
+    //Следит за состоянием поля ввода пароля
+    setLoginData({
+      ...loginData,
+      conformedPassword: event.target.value,
     });
   }
 
@@ -59,6 +83,9 @@ function Signup() {
                 value={loginData.mail}
                 onChange={onEmailChange}
               />
+              <div className={styles.modalErrText}>
+                {isEmail ? "" : "Ошибка: укажите почту"}
+              </div>
               <input
                 className={styles.modalInput}
                 type="password"
@@ -72,9 +99,17 @@ function Signup() {
                 type="password"
                 name="password"
                 placeholder="Повторите пароль"
+                value={loginData.conformedPassword}
+                onChange={onConfPasswordChange}
               />
-              <button className={styles.modalBtnSignupEnt}>
-                <Link href="/">Зарегистрироваться</Link>
+              <div className={styles.modalErrText}>
+                {isConformedPass ? "" : "Ошибка: пароли не совпадают"}
+              </div>
+              <button className={styles.modalBtnSignupEnt}
+                onClick={(event) => setAuth(event, loginData)}
+              >
+                {/* <Link href="/">Зарегистрироваться</Link> */}
+
               </button>
             </form>
           </div>
