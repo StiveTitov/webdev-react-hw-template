@@ -23,10 +23,10 @@ function Signup() {
 
   const [isConformedPass, setIsConformedPass] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
-
-  async function setAuth(event, loginData: AuthType) {
-    event.preventDefault()
-    loginData.mail===""? setIsEmail(false):setIsEmail(true);
+  const [textErrPass, setTextErrPass] = useState("");
+  async function setAuth(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, loginData: AuthType) {
+    e.preventDefault()
+    loginData.mail === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === loginData.conformedPassword ? setIsConformedPass(true) : setIsConformedPass(false)
     console.log(loginData);
     // await Registration(loginData).then((data) => {
@@ -35,27 +35,27 @@ function Signup() {
     // });
   }
 
-  function onEmailChange(event) {
+  function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     //Следит за состоянием поля ввода логина
     setLoginData({
       ...loginData,
-      mail: event.target.value,
+      mail: e.target.value,
     });
   }
 
-  function onPasswordChange(event) {
+  function onPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     //Следит за состоянием поля ввода пароля
     setLoginData({
       ...loginData,
-      password: event.target.value,
+      password: e.target.value,
     });
   }
 
-  function onConfPasswordChange(event) {
+  function onConfPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     //Следит за состоянием поля ввода пароля
     setLoginData({
       ...loginData,
-      conformedPassword: event.target.value,
+      conformedPassword: e.target.value,
     });
   }
 
@@ -106,10 +106,10 @@ function Signup() {
                 {isConformedPass ? "" : "Ошибка: пароли не совпадают"}
               </div>
               <button className={styles.modalBtnSignupEnt}
-                onClick={(event) => setAuth(event, loginData)}
+                onClick={(e) => setAuth(e, loginData)}
               >
                 {/* <Link href="/">Зарегистрироваться</Link> */}
-
+                Зарегистрироваться
               </button>
             </form>
           </div>
