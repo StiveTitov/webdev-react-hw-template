@@ -29,10 +29,12 @@
   }
   
   .modalBtnSignupEnt:hover {
+    color:#FFFFFF;
     background-color: #3F007D;
   }
   
   .modalBtnSignupEnt:active {
+    color:#FFFFFF;
     background-color: #271A58;
   }
   
@@ -128,6 +130,12 @@
   .modalBtnSignupEnt {
     width: 278px;
     height: 62px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.05px;
+    color: #FFFFFF;
     background-color: #580EA2;
     border-radius: 6px;
     margin-left: 4px;
@@ -163,4 +171,7 @@
         -ms-flex-pack: center;
             justify-content: center;
   }
-  
+
+  .modalErrText{
+color: red;
+  }
