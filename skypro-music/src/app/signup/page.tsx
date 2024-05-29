@@ -5,9 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Registration } from '../api/AuthApi';
+import { useRouter } from 'next/navigation';
 
 type AuthType = {
-  mail: string,
+  email: string,
+  username: string,
   password: string,
   conformedPassword: string,
 }
@@ -15,8 +17,10 @@ type AuthType = {
 
 function Signup() {
   //const {login}= useUser();
+  const router = useRouter();
   const [loginData, setLoginData] = useState({
-    mail: "",
+    email: "",
+    username: "",
     password: "",
     conformedPassword: "",
   });
@@ -26,20 +30,25 @@ function Signup() {
   const [textErrPass, setTextErrPass] = useState("");
   async function setAuth(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, loginData: AuthType) {
     e.preventDefault()
-    loginData.mail === "" ? setIsEmail(false) : setIsEmail(true);
+    loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === loginData.conformedPassword ? setIsConformedPass(true) : setIsConformedPass(false)
     console.log(loginData);
-    // await Registration(loginData).then((data) => {
-    //   // login(data.user)
+    await Registration(loginData).then((data) => {
+      if (!data) {
+        router.push("/tracks");
+      } else {
+        return (console.log("Ошибка. Ответ авторизации:" + data))
+      }
 
-    // });
+    });
   }
 
   function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     //Следит за состоянием поля ввода логина
     setLoginData({
       ...loginData,
-      mail: e.target.value,
+      email: e.target.value,
+      username: e.target.value,
     });
   }
 
@@ -80,7 +89,7 @@ function Signup() {
                 type="email"
                 name="login"
                 placeholder="Почта"
-                value={loginData.mail}
+                value={loginData.email}
                 onChange={onEmailChange}
               />
               <div className={styles.modalErrText}>
