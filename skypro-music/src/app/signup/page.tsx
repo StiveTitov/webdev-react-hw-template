@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { AuthType, Registration, getToken } from '../api/AuthApi';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/hooks/hooks';
-import { setAuthState, setUserData } from '@/store/features/authSlice';
+import { setAuthState, setToken, setUserData } from '@/store/features/authSlice';
 
 
 
@@ -31,12 +31,20 @@ function Signup() {
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === loginData.conformedPassword ? setIsConformedPass(true) : setIsConformedPass(false)
     console.log(loginData);
+    const login = {
+      email: loginData.email,
+      password: loginData.password,
+    }
+    localStorage.setItem('user', JSON.stringify(login)); // Помещаем данные пользователя в 
+    // локальное хранилище localStorage
     await Registration(loginData).then(response => {
       if (response) {
         dispatch(setUserData(response));
         dispatch(setAuthState());
         getToken(loginData).then(token => {
           if (token) {
+            dispatch(setToken(token));
+            localStorage.setItem('tokenRefresh', token.refresh);
             console.log("Полученые токены-" + "access:" + token.access + " refresh:" + token.refresh);
           } else {
             return (console.log("Ошибка. Ответ getToken:" + token))

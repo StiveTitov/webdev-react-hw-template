@@ -24,6 +24,8 @@ export type TokenType = {
     refresh: string,
     access: string,
 }
+
+
 export async function Registration({ email, username, password }: RegistrationType): Promise<UserType> {
     return fetch("https://skypro-music-api.skyeng.tech/user/signup/", {
         method: "POST",
@@ -103,12 +105,12 @@ export async function getToken(loginData: AuthType): Promise<TokenType> {
         .then((response) => response.json())
 }
 
-export async function refreshToken(): Promise<TokenType> {
+export async function refreshToken(refresh: string): Promise<TokenType> {
 
     return fetch("https://skypro-music-api.skyeng.tech/user/token/refresh/", {
         method: "POST",
         body: JSON.stringify({
-            refresh: null,
+            refresh,
         }),
         headers: {
             // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса

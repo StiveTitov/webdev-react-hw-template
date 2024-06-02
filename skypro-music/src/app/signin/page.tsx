@@ -35,14 +35,18 @@ function Signin() {
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === "" ? setIsConformedPass(false) : setIsConformedPass(true)
     console.log("Login data: " + loginData.email + " " + loginData.password);
+    localStorage.setItem('user', JSON.stringify(loginData)); // Помещаем данные пользователя в 
+    // локальное хранилище localStorage 
     await Authorization(loginData).then(response => {
 
       if (response) {
         dispatch(setUserData(response));
         dispatch(setAuthState());
+         
         getToken(loginData).then(token => {
           if (token) {
             dispatch(setToken(token));
+            localStorage.setItem('tokenRefresh', token.refresh);
           } else {
             return (console.log("Ошибка. Ответ getToken:" + token))
           }
