@@ -4,17 +4,18 @@ import styles from './signin.module.css'
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Authorization } from '../api/AuthApi';
+import { AuthType, Authorization, getToken } from '../api/AuthApi';
 import { useRouter } from 'next/navigation';
 import { clearScreenDown } from 'readline';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setAuthState, setToken, setUserData } from '@/store/features/authSlice';
+import { store } from '@/store/store';
 
-type AuthType = {
-  email: string,
-  password: string,
-}
+
 
 function Signin() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -24,18 +25,33 @@ function Signin() {
   const [isConformedPass, setIsConformedPass] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
   const [textErrPass, setTextErrPass] = useState("");
+  const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
+
+  console.log("Состояние пользователя:" + isUserAuth);
+
+
   async function setAuth(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, loginData: AuthType) {
     e.preventDefault()
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === "" ? setIsConformedPass(false) : setIsConformedPass(true)
     console.log("Login data: " + loginData.email + " " + loginData.password);
-    await Authorization(loginData).then((data) => {
+    await Authorization(loginData).then(response => {
 
-      if (!data) {
+      if (response) {
+        dispatch(setUserData(response));
+        dispatch(setAuthState());
+        getToken(loginData).then(token => {
+          if (token) {
+            dispatch(setToken(token));
+          } else {
+            return (console.log("Ошибка. Ответ getToken:" + token))
+          }
+        });
         router.push("/tracks");
       } else {
-        return (console.log("Ошибка. Ответ авторизации:" + data))
+        return (console.log("Ошибка. Ответ авторизации:" + response))
       }
+
     });
   }
   function onEmailChange(e: React.ChangeEvent<HTMLInputElement>) {

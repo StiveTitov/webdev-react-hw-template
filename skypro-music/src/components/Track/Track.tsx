@@ -7,7 +7,7 @@ import { setCurrentTrack } from "@/store/features/playlistSlice";
 
 type TrackType = {
     track: TracksType,
-    
+
 
 }
 
@@ -19,6 +19,14 @@ export default function Track({ track }: TrackType) {
     const currentTrack = useAppSelector((store) => store.playlist.currentTrack)
     const tracks = useAppSelector((store) => store.playlist.tracks);
     const dispatch = useAppDispatch();
+
+    const userInfo = useAppSelector((store) => store.auth.userData);
+    const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
+    const tokenInfo = useAppSelector((store) => store.auth.token);
+    console.log("Инфо:" + userInfo?.email);
+    console.log("Состояние пользователя:" + isUserAuth);
+    console.log("Полученые токен-access:" + tokenInfo?.access);
+    console.log("Полученые токен-refresh:" + tokenInfo?.refresh);
 
     // // Определение функции для форматирования длительности аудио
     function formatDuration(duration_in_seconds: any) {
@@ -36,11 +44,11 @@ export default function Track({ track }: TrackType) {
                     <div className={styles.track__title}>
                         <div className={styles.track__titleImage}>
                             {/* Чтобы пометить выбранный трек розовой точкой */}
-                            {currentTrack?.id === track.id && 
-                            // И если трек воспроизводится (isPlaying- true)- включить анимацию точки
-                            (isPlaying ?
-                                (<span className={styles.pointPulse} ></span>)
-                                : (<span className={styles.point} ></span>))}
+                            {currentTrack?.id === track.id &&
+                                // И если трек воспроизводится (isPlaying- true)- включить анимацию точки
+                                (isPlaying ?
+                                    (<span className={styles.pointPulse} ></span>)
+                                    : (<span className={styles.point} ></span>))}
                             {/* на против треков, которые не выбраны, выводится просто иконка ноты */}
                             <SVG className={styles.track__titleSvg} icon="icon-note" />
                         </div>

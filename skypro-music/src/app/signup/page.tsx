@@ -4,20 +4,18 @@ import styles from './signup.module.css'
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Registration } from '../api/AuthApi';
+import { AuthType, Registration, getToken } from '../api/AuthApi';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/hooks/hooks';
+import { setAuthState, setUserData } from '@/store/features/authSlice';
 
-type AuthType = {
-  email: string,
-  username: string,
-  password: string,
-  conformedPassword: string,
-}
+
 
 
 function Signup() {
-  //const {login}= useUser();
+
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [loginData, setLoginData] = useState({
     email: "",
     username: "",
@@ -33,11 +31,20 @@ function Signup() {
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === loginData.conformedPassword ? setIsConformedPass(true) : setIsConformedPass(false)
     console.log(loginData);
-    await Registration(loginData).then((data) => {
-      if (!data) {
+    await Registration(loginData).then(response => {
+      if (response) {
+        dispatch(setUserData(response));
+        dispatch(setAuthState());
+        getToken(loginData).then(token => {
+          if (token) {
+            console.log("Полученые токены-" + "access:" + token.access + " refresh:" + token.refresh);
+          } else {
+            return (console.log("Ошибка. Ответ getToken:" + token))
+          }
+        });
         router.push("/tracks");
       } else {
-        return (console.log("Ошибка. Ответ авторизации:" + data))
+        return (console.log("Ошибка. Ответ авторизации:" + response))
       }
 
     });

@@ -1,5 +1,9 @@
-import { promises } from "dns";
-
+export type AuthType = {
+    email: string,
+    username?: string,
+    password: string,
+    conformedPassword?: string,
+}
 
 export type UserType = {
     id: number,
@@ -20,7 +24,7 @@ export type TokenType = {
     refresh: string,
     access: string,
 }
-export async function Registration({ email, username, password }: RegistrationType): Promise<void | UserType[]> {
+export async function Registration({ email, username, password }: RegistrationType): Promise<UserType> {
     return fetch("https://skypro-music-api.skyeng.tech/user/signup/", {
         method: "POST",
         body: JSON.stringify({
@@ -41,20 +45,19 @@ export async function Registration({ email, username, password }: RegistrationTy
 
             }
 
-            getToken(email, password);
             return response.json()
 
         })
         .catch((error: Error) => {
             console.log(error.message);
         })
-        .then((json) => console.log(json));
+
 
 }
 
-export async function Authorization({ email, password }: RegistrationType): Promise<void | UserType[]> {
+export async function Authorization({ email, password }: RegistrationType): Promise<UserType> {
 
-    const response = await fetch("https://skypro-music-api.skyeng.tech/user/login/", {
+    return fetch("https://skypro-music-api.skyeng.tech/user/login/", {
         method: "POST",
         body: JSON.stringify({
             email,
@@ -73,7 +76,6 @@ export async function Authorization({ email, password }: RegistrationType): Prom
                 })
             }
 
-            getToken(email, password);
             return response.json();
 
 
@@ -82,12 +84,12 @@ export async function Authorization({ email, password }: RegistrationType): Prom
             console.log(error.message);
         })
 
-        .then((json) => console.log(json));
-
 }
 
-export async function getToken(email: string, password: string): Promise<void | TokenType[]> {
-    fetch("https://skypro-music-api.skyeng.tech/user/token/", {
+export async function getToken(loginData: AuthType): Promise<TokenType> {
+    const email = loginData.email;
+    const password = loginData.password;
+    return fetch("https://skypro-music-api.skyeng.tech/user/token/", {
         method: "POST",
         body: JSON.stringify({
             email,
@@ -99,23 +101,20 @@ export async function getToken(email: string, password: string): Promise<void | 
         },
     })
         .then((response) => response.json())
-        .then((json) => console.log(json));
-
 }
 
-export async function refreshToken(): Promise<void | TokenType[]> {
-    
-        fetch("https://skypro-music-api.skyeng.tech/user/token/refresh/", {
-            method: "POST",
-            body: JSON.stringify({
-                refresh: null,
-            }),
-            headers: {
-                // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-                "content-type": "application/json",
-            },
-        })
+export async function refreshToken(): Promise<TokenType> {
+
+    return fetch("https://skypro-music-api.skyeng.tech/user/token/refresh/", {
+        method: "POST",
+        body: JSON.stringify({
+            refresh: null,
+        }),
+        headers: {
+            // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
+            "content-type": "application/json",
+        },
+    })
         .then((response) => response.json())
-        .then((json) => console.log(json));
+
 }
-//
