@@ -44,7 +44,7 @@ export default function Track({ track, isFavorite }: TrackType) {
     }
 
     function handleLike(e) {
-        
+        //
         e.stopPropagation();
         try {
 
