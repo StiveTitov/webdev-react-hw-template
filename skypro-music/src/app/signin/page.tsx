@@ -46,7 +46,7 @@ function Signin() {
         getToken(loginData).then(token => {
           if (token) {
             dispatch(setToken(token));
-            localStorage.setItem('tokenRefresh', token.refresh);
+            localStorage.setItem('tokenRefresh', JSON.stringify(token));
           } else {
             return (console.log("Ошибка. Ответ getToken:" + token))
           }

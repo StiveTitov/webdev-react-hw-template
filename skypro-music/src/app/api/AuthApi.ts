@@ -105,7 +105,7 @@ export async function getToken(loginData: AuthType): Promise<TokenType> {
         .then((response) => response.json())
 }
 
-export async function refreshToken(refresh: string): Promise<TokenType> {
+export async function refreshToken(refresh: string | undefined): Promise<TokenType> {
 
     return fetch("https://skypro-music-api.skyeng.tech/user/token/refresh/", {
         method: "POST",
