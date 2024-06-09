@@ -11,7 +11,7 @@ type PlaylistType = {
     tracks: TracksType[],
 
 }
-export default function Playlist() {
+export default function Playlist({isFavorite}) {
 
     const tracks = useAppSelector((store) => store.playlist.tracks);
     const filtredTracks = useAppSelector((store) => store.playlist.filtredTracks);
@@ -32,8 +32,8 @@ export default function Playlist() {
 
 
 
-                {memoizedTracks.map((track) => (
-                    <Track key={track.id} track={track} />
+                {memoizedTracks?.map((track) => (
+                    <Track isFavorite key={track.id} track={track} />
                 ))}
 
 
