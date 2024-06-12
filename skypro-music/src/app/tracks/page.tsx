@@ -18,13 +18,13 @@ export default function MainTracksPage() {
   const dispatch = useAppDispatch();
   const tracks = useAppSelector((store) => store.playlist.tracks);
   //При загрузки страницы проверяем есть ли регистрационые данные в localStorage
-  const loginData = JSON.parse(localStorage.user);
+  const loginData = JSON.parse(localStorage.getItem('user') || '{}');
 
   //и помещаем регистрационные данные и токины в REDAX (store)
   function setLoginData() {
     if (loginData) {
       dispatch(setUserData(loginData));
-      dispatch(setToken(JSON.parse(localStorage.tokenRefresh)));
+      dispatch(setToken(JSON.parse(localStorage.getItem('tokenRefresh') || '')));
     }
   }
 

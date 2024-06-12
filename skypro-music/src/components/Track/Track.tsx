@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css"
-import { TracksType, disLike, setLike } from "@/app/api/TrackApi";
+import { TracksType, disLike, like, setLike } from "@/app/api/TrackApi";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { useState } from "react";
 import { refreshToken } from "@/app/api/AuthApi";
@@ -26,6 +26,7 @@ export default function Track({ track, isFavorite }: TrackType) {
     const userInfo = useAppSelector((store) => store.auth.userData);
     const checkLike = isFavorite || !!track.stared_user.find((user) => user.id === userInfo?.id)
     const [isLiked, setIsLiked] = useState(checkLike);
+    const [isLikeError, setIsLikeError] = useState();
 
     const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
     const tokenInfo = useAppSelector((store) => store.auth.token);
@@ -43,38 +44,60 @@ export default function Track({ track, isFavorite }: TrackType) {
         return `${minutes}:${formattedSeconds}`;
     }
 
+    function handleToken() {
+        const [refresh, setTokenRefresh] = useState(useAppSelector((store) => store.auth.token?.refresh));
+
+        refreshToken(refresh).then(response => dispatch(setToken(response)));
+
+    }
+    function requestWithRefresh(request) {
+        refreshToken(tokenInfo?.refresh).then((token) => {
+            dispatch(setToken({ ...tokenInfo, access: token.access }))
+            localStorage.setItem('tokenRefresh', JSON.stringify({ ...tokenInfo, access: token.access }));
+            return request()
+        })
+    }
+    function setDislike() {
+        disLike({
+            id: track.id,
+            token: tokenInfo?.access,
+        }).then(response => {
+            if (response === 200) {
+                setIsLiked((prev) => !prev)
+            } else {
+                setIsLikeError(response);
+                if (response === 401) {
+                    requestWithRefresh(setDislike)
+                }
+            }
+        })
+    }
+function setLike(){
+    like({
+        id: track.id,
+        token: tokenInfo?.access,
+    }).then(response => {
+        if (response === 200) {
+            setIsLiked((prev) => !prev)
+        } else {
+            setIsLikeError(response);
+            if (response === 401) {
+                requestWithRefresh(setLike)
+            }
+        }
+    })
+}
     function handleLike(e) {
-        //
         e.stopPropagation();
         try {
 
             if (isLiked) {
                 try {
-                    disLike({
-                        id: track.id,
-                        token: tokenInfo?.access,
-                    }).then(response => {
-                        if (response === 200) {
-                            setIsLiked((prev) => !prev)
-                        } else if (response === 401) {
-                            const refresh = useAppSelector((store) => store.auth.token?.refresh);
-                            refreshToken(refresh).then(response=>dispatch(setToken(response)));
-                        }
-                    })
+                    setDislike()
                 } catch (error) { console.log("Ошибка disLike:" + error); }
             } else {
                 try {
-                    setLike({
-                        id: track.id,
-                        token: tokenInfo?.access,
-                    }).then(response => {
-                        if (response === 200) {
-                            setIsLiked((prev) => !prev)
-                        } else if (response === 401) {
-                            const refresh = useAppSelector((store) => store.auth.token?.refresh);
-                            refreshToken(refresh).then(response=>dispatch(setToken(response)));
-                        }
-                    })
+                    setLike()
                 } catch (error) { console.log("Ошибка setLike:" + error); }
 
             }

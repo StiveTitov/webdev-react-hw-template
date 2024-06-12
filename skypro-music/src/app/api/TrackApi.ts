@@ -89,7 +89,7 @@ export async function getCategoryList(): Promise<CategoryTracks> {
         })
 }
 
-export async function setLike({ token, id }: LikeType): Promise<LikePromiseType> {
+export async function like({ token, id }: LikeType): Promise<LikePromiseType> {
 
     return fetch(`https://skypro-music-api.skyeng.tech/catalog/track/${id}/favorite/`, {
         method: "POST",
