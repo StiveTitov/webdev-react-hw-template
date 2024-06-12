@@ -44,65 +44,67 @@ export default function Track({ track, isFavorite }: TrackType) {
         return `${minutes}:${formattedSeconds}`;
     }
 
-    function handleToken() {
-        const [refresh, setTokenRefresh] = useState(useAppSelector((store) => store.auth.token?.refresh));
 
-        refreshToken(refresh).then(response => dispatch(setToken(response)));
-
-    }
     function requestWithRefresh(request) {
         refreshToken(tokenInfo?.refresh).then((token) => {
-            dispatch(setToken({ ...tokenInfo, access: token.access }))
-            localStorage.setItem('tokenRefresh', JSON.stringify({ ...tokenInfo, access: token.access }));
-            return request()
-        })
+            dispatch(setToken({ ...tokenInfo, access: token.access }));
+            localStorage.setItem(
+                "tokenRefresh",
+                JSON.stringify({ ...tokenInfo, access: token.access })
+            );
+            return request(token.access);
+        });
     }
-    function setDislike() {
+    function setDislike(token) {
         disLike({
             id: track.id,
-            token: tokenInfo?.access,
-        }).then(response => {
+            token,
+        }).then((response) => {
             if (response === 200) {
-                setIsLiked((prev) => !prev)
+                setIsLiked((prev) => !prev);
             } else {
                 setIsLikeError(response);
                 if (response === 401) {
-                    requestWithRefresh(setDislike)
+                    requestWithRefresh(setDislike);
                 }
             }
-        })
+        });
     }
-function setLike(){
-    like({
-        id: track.id,
-        token: tokenInfo?.access,
-    }).then(response => {
-        if (response === 200) {
-            setIsLiked((prev) => !prev)
-        } else {
-            setIsLikeError(response);
-            if (response === 401) {
-                requestWithRefresh(setLike)
+
+    function setLike(token) {
+        like({
+            id: track.id,
+            token,
+        }).then((response) => {
+            if (response === 200) {
+                setIsLiked((prev) => !prev);
+            } else {
+                setIsLikeError(response);
+                if (response === 401) {
+                    requestWithRefresh(setLike);
+                }
             }
-        }
-    })
-}
+        });
+    }
     function handleLike(e) {
         e.stopPropagation();
         try {
-
             if (isLiked) {
                 try {
-                    setDislike()
-                } catch (error) { console.log("Ошибка disLike:" + error); }
+                    setDislike(tokenInfo?.access);
+                } catch (error) {
+                    console.log("Ошибка disLike:" + error);
+                }
             } else {
                 try {
-                    setLike()
-                } catch (error) { console.log("Ошибка setLike:" + error); }
-
+                    setLike(tokenInfo?.access);
+                } catch (error) {
+                    console.log("Ошибка setLike:" + error);
+                }
             }
-
-        } catch (error) { console.log("Ошибка:" + error); }
+        } catch (error) {
+            console.log("Ошибка:" + error);
+        }
     }
     return (
         <>

@@ -149,6 +149,6 @@ export async function getFavoriteTracks(token: string): Promise<CategoryTracks> 
             return respons.json()
         })
         .catch((error: Error) => {
-            alert(error.message)
+            throw Error
         })
 }
