@@ -6,10 +6,12 @@ import { SVG } from '../SVG';
 import { useEffect, useState } from 'react';
 import { Skileton } from '../Skileton';
 import { getCategoryList } from '@/app/api/TrackApi';
+import { AuthType } from '@/app/api/AuthApi';
 
 
 
 export default function SideBar() {
+    const loginData:AuthType = JSON.parse(localStorage.getItem('user') || '{}');
     
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -19,7 +21,7 @@ export default function SideBar() {
     return (
         <div className={styles.main__sidebar}>
             <div className={styles.sidebar__personal}>
-                <p className={styles.sidebarPersonalName}>Sergey.Ivanov</p>
+                <p className={styles.sidebarPersonalName}>{loginData.email}</p>
                 <div className={styles.sidebar__icon}>
                     <Link href="/signin">
                         <SVG icon="logout" />

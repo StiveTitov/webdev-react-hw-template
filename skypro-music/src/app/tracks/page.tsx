@@ -24,7 +24,7 @@ export default function MainTracksPage() {
   function setLoginData() {
     if (loginData) {
       dispatch(setUserData(loginData));
-      dispatch(setToken(JSON.parse(localStorage.getItem('tokenRefresh') || '')));
+      dispatch(setToken(JSON.parse(localStorage.getItem('tokenRefresh') || '{}')));
     }
   }
 

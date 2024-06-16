@@ -23,14 +23,6 @@ type CategoryType = {
 
 
 export default function Favorite() {
-
-
-
-
-
-
-
-
     const dispatch = useAppDispatch();
     const tracks = useAppSelector((store) => store.playlist.tracks);
 
