@@ -3,7 +3,7 @@ import { SVG } from "../SVG";
 import styles from "./Content.module.css"
 import classNames from "classnames";
 
-export default function Content({isFavorite}) {
+export default function Content() {
     return (
         <div className={styles.centerblock__content}>
             <div className={styles.content__title}>

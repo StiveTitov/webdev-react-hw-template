@@ -15,7 +15,7 @@ export default function Playlist({ isFavorite }) {
 
     const tracks = useAppSelector((store) => store.playlist.tracks);
     const filtredTracks = useAppSelector((store) => store.playlist.filtredTracks);
-    
+
 
     const memoizedTracks = useMemo(() => {
         if (filtredTracks.length !== 0) {
@@ -35,7 +35,7 @@ export default function Playlist({ isFavorite }) {
 
                 {memoizedTracks?.map((track) => (
                     <Track isFavorite key={track.id} track={track}
-                        
+
                     />
                 ))}
 

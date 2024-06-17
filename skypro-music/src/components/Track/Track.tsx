@@ -25,15 +25,16 @@ export default function Track({ track, isFavorite }: TrackType) {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector((store) => store.auth.userData);
   const checkLike = isFavorite || !!track.stared_user.find((user) => user.id === userInfo?.id)
-  
-  console.log("like:"+like);
+
+
+
   const [isLiked, setIsLiked] = useState(checkLike);
   const [isLikeError, setIsLikeError] = useState();
 
   const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
   const tokenInfo = useAppSelector((store) => store.auth.token);
   console.log("Инфо:" + userInfo?.email);
-  
+
 
   // // Определение функции для форматирования длительности аудио
   function formatDuration(duration_in_seconds: any) {
@@ -47,12 +48,17 @@ export default function Track({ track, isFavorite }: TrackType) {
 
   function requestWithRefresh(request) {
     refreshToken(tokenInfo?.refresh).then((token) => {
-      dispatch(setToken({ ...tokenInfo, access: token.access }));
-      localStorage.setItem(
-        "tokenRefresh",
-        JSON.stringify({ ...tokenInfo, access: token.access })
-      );
-      return request(token.access);
+      if (token === 400) {
+        alert("Чтобы поставить лайк нужно авторизоваться");
+        return
+      } else {
+        dispatch(setToken({ ...tokenInfo, access: token.access }));
+        localStorage.setItem(
+          "tokenRefresh",
+          JSON.stringify({ ...tokenInfo, access: token.access })
+        );
+        return request(token.access);
+      }
     });
   }
   function setDislike(token) {
@@ -66,6 +72,9 @@ export default function Track({ track, isFavorite }: TrackType) {
         setIsLikeError(response);
         if (response === 401) {
           requestWithRefresh(setDislike);
+        } else if (response === 400) {
+          console.log('Ошибка!');
+          return
         }
       }
     });
@@ -81,6 +90,9 @@ export default function Track({ track, isFavorite }: TrackType) {
         setIsLikeError(response);
         if (response === 401) {
           requestWithRefresh(setLike);
+        } else if (response === 400) {
+          console.log('Ошибка!');
+          return
         }
       }
     });

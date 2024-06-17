@@ -120,6 +120,18 @@ export async function refreshToken(refresh: string | undefined): Promise<TokenTy
             "content-type": "application/json",
         },
     })
-        .then((response) => response.json())
+        .then(response => {
 
+            if (!response.ok) {
+                console.log("Ошибка");
+                return response.status
+
+                //return response.text().then(text => {
+
+                //     throw new Error(text)
+                // })
+            }
+
+            return response.json();
+        })
 }
