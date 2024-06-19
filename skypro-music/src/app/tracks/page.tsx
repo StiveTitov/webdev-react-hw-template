@@ -7,11 +7,10 @@ import { MainNavigation } from '@/components/MainNavigation';
 import { Search } from '@/components/Search';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { SideBar } from '@components/SideBar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getAllTracks } from '../api/TrackApi';
 import { setTracks } from '@/store/features/playlistSlice';
-import { Authorization, getToken } from '../api/AuthApi';
-import { setAuthState, setToken, setUserData } from '@/store/features/authSlice';
+import { setToken, setUserData } from '@/store/features/authSlice';
 
 export default function MainTracksPage() {
   const AuthState = useAppSelector((store) => store.auth.isAuthState);

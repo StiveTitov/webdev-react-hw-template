@@ -2,12 +2,9 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css"
-import { TracksType, disLike, like, setLike } from "@/app/api/TrackApi";
+import { TracksType } from "@/app/api/TrackApi";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
-import { useState } from "react";
-import { refreshToken } from "@/app/api/AuthApi";
-import { store } from "@/store/store";
-import { setToken } from "@/store/features/authSlice";
+import { useLikeTrack } from "@/hooks/useLikeTrack";
 
 type TrackType = {
   track: TracksType,
@@ -24,16 +21,7 @@ export default function Track({ track, isFavorite }: TrackType) {
   const tracks = useAppSelector((store) => store.playlist.tracks);
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector((store) => store.auth.userData);
-  const checkLike = isFavorite || !!track.stared_user.find((user) => user.id === userInfo?.id)
-
-
-
-  const [isLiked, setIsLiked] = useState(checkLike);
-  const [isLikeError, setIsLikeError] = useState();
-
-  const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
-  const tokenInfo = useAppSelector((store) => store.auth.token);
-  console.log("Инфо:" + userInfo?.email);
+  const { isLiked, handleLike } = useLikeTrack(track, isFavorite)
 
 
   // // Определение функции для форматирования длительности аудио
@@ -46,77 +34,7 @@ export default function Track({ track, isFavorite }: TrackType) {
   }
 
 
-  function requestWithRefresh(request) {
-    refreshToken(tokenInfo?.refresh).then((token) => {
-      if (token === 400) {
-        alert("Чтобы поставить лайк нужно авторизоваться");
-        return
-      } else {
-        dispatch(setToken({ ...tokenInfo, access: token.access }));
-        localStorage.setItem(
-          "tokenRefresh",
-          JSON.stringify({ ...tokenInfo, access: token.access })
-        );
-        return request(token.access);
-      }
-    });
-  }
-  function setDislike(token) {
-    disLike({
-      id: track.id,
-      token,
-    }).then((response) => {
-      if (response === 200) {
-        setIsLiked((prev) => !prev);
-      } else {
-        setIsLikeError(response);
-        if (response === 401) {
-          requestWithRefresh(setDislike);
-        } else if (response === 400) {
-          console.log('Ошибка!');
-          return
-        }
-      }
-    });
-  }
-  function setLike(token) {
-    like({
-      id: track.id,
-      token,
-    }).then((response) => {
-      if (response === 200) {
-        setIsLiked((prev) => !prev);
-      } else {
-        setIsLikeError(response);
-        if (response === 401) {
-          requestWithRefresh(setLike);
-        } else if (response === 400) {
-          console.log('Ошибка!');
-          return
-        }
-      }
-    });
-  }
-  function handleLike(e) {
-    e.stopPropagation();
-    try {
-      if (isLiked) {
-        try {
-          setDislike(tokenInfo?.access);
-        } catch (error) {
-          console.log("Ошибка disLike:" + error);
-        }
-      } else {
-        try {
-          setLike(tokenInfo?.access);
-        } catch (error) {
-          console.log("Ошибка setLike:" + error);
-        }
-      }
-    } catch (error) {
-      console.log("Ошибка:" + error);
-    }
-  }
+
   return (
     <>
 

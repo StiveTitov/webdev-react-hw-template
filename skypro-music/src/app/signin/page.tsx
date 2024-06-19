@@ -35,7 +35,7 @@ function Signin() {
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === "" ? setIsConformedPass(false) : setIsConformedPass(true)
     console.log("Login data: " + loginData.email + " " + loginData.password);
-    localStorage.setItem('user', JSON.stringify(loginData)); // Помещаем данные пользователя в 
+     // Помещаем данные пользователя в 
     // локальное хранилище localStorage 
     await Authorization(loginData).then(response => {
 
@@ -53,7 +53,7 @@ function Signin() {
         return (console.log("Ошибка. Ответ авторизации:" + response))
       } else {
         setTextError("")
-
+        localStorage.setItem('user', JSON.stringify(response));
         dispatch(setUserData(response));
         dispatch(setAuthState());
 

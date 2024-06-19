@@ -34,7 +34,7 @@ export default function Playlist({ isFavorite }) {
 
 
                 {memoizedTracks?.map((track) => (
-                    <Track isFavorite key={track.id} track={track}
+                    <Track isFavorite={isFavorite} key={track.id} track={track}
 
                     />
                 ))}

@@ -3,7 +3,7 @@ import { SVG } from "../SVG";
 import styles from "./Content.module.css"
 import classNames from "classnames";
 
-export default function Content() {
+export default function Content({ isFavorite }) {
     return (
         <div className={styles.centerblock__content}>
             <div className={styles.content__title}>
@@ -14,7 +14,7 @@ export default function Content() {
                     <SVG className={styles.playlistTitle__svg} icon='icon-watch' />
                 </div>
             </div>
-            <Playlist isFavorite/>
+            <Playlist isFavorite={isFavorite} />
 
         </div>
     );
