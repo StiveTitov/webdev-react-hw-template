@@ -12,6 +12,7 @@ import { TracksType } from '@/app/api/TrackApi';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { nextTrack, prevTrack, togglePlaying, toggleShuffled } from '@/store/features/playlistSlice';
 import { store } from '@/store/store';
+import { useLikeTrack } from '@/hooks/useLikeTrack';
 
 
 
@@ -29,7 +30,7 @@ export default function Bar() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(50);
-
+  const { isLiked, handleLike } = useLikeTrack(currentTrack)
 
 
   // Определение обработчика событий для обновления времени и длительности аудио
@@ -126,7 +127,7 @@ export default function Bar() {
   useEffect(() => {
 
     memoizedCallback();
-    
+
   }, [memoizedCallback]);
 
 
@@ -198,15 +199,23 @@ export default function Bar() {
               </div>
             </div>
 
-            <div className={styles.trackPlayLikeDis}>
-              <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
-                <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
+            <div className={styles.trackPlayLikeDis}
+              onClick={handleLike}
+            >
+              {
+                isLiked ?
+                  <div className={classNames(styles.trackPlayLike, styles._btnIcon)}>
+                    <SVG className={styles.trackPlayLikeSvg} icon="icon-like" />
 
-              </div>
-              <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
-                <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
+                  </div>
+                  :
+                  <div className={classNames(styles.trackPlayDislike, styles._btnIcon)}>
+                    <SVG className={styles.trackPlayDislikeSvg} icon="icon-dislike" />
 
-              </div>
+                  </div>
+              }
+
+
             </div>
           </div>
 
@@ -219,6 +228,7 @@ export default function Bar() {
 
             </div>
             <div className={styles.volumeProgress}>
+
 
               <VolumeBar volume={volume} handleVolume={handleVolume} />
             </div>

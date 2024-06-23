@@ -6,7 +6,7 @@ const nextConfig = {
             //откуда хотим редиректить
              source: '/',
              // куда редиректить 
-            destination: '/signin',
+            destination: '/tracks',
             permanent: true,
           },
         ]

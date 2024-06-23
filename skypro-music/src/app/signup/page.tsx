@@ -16,6 +16,7 @@ function Signup() {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [textError, setTextError] = useState("");
   const [loginData, setLoginData] = useState({
     email: "",
     username: "",
@@ -38,22 +39,29 @@ function Signup() {
     localStorage.setItem('user', JSON.stringify(login)); // Помещаем данные пользователя в 
     // локальное хранилище localStorage
     await Registration(loginData).then(response => {
-      if (response) {
+      if (response == '500') {
+
+        setTextError("Проблема с сервером")
+        return (console.log("Ошибка. Ответ авторизации:" + response))
+      } else if (response == '400') {
+
+        setTextError("Возможно не передан логин или пароль")
+        return (console.log("Ошибка. Ответ авторизации:" + response))
+      } else {
+        setTextError("")
         dispatch(setUserData(response));
         dispatch(setAuthState());
         getToken(loginData).then(token => {
           if (token) {
             dispatch(setToken(token));
-            localStorage.setItem('tokenRefresh', token.refresh);
+            localStorage.setItem('tokenRefresh', JSON.stringify(token));
             console.log("Полученые токены-" + "access:" + token.access + " refresh:" + token.refresh);
           } else {
             return (console.log("Ошибка. Ответ getToken:" + token))
           }
         });
         router.push("/tracks");
-      } else {
-        return (console.log("Ошибка. Ответ авторизации:" + response))
-      }
+      } 
 
     });
   }
@@ -128,6 +136,7 @@ function Signup() {
               />
               <div className={styles.modalErrText}>
                 {isConformedPass ? "" : "Ошибка: пароли не совпадают"}
+                {textError}
               </div>
               <button className={styles.modalBtnSignupEnt}
                 onClick={(e) => setAuth(e, loginData)}

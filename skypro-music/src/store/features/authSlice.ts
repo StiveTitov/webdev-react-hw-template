@@ -11,11 +11,18 @@ type UserListType = {
   userData: null | UserType,
   token: null | TokenType,
 };
-
+function checkLsData(key: string) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || '{}')
+  }
+  catch {
+    return null
+  }
+}
 const initialState: UserListType = {
-  isAuthState: false,
-  userData: null,
-  token: null,
+  isAuthState: !!checkLsData('user'),
+  userData: checkLsData('user'),
+  token: checkLsData('tokenRefresh'),
 };
 
 const authSlice = createSlice({

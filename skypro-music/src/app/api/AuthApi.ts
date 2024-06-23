@@ -6,11 +6,11 @@ export type AuthType = {
 }
 
 export type UserType = {
-    id: number,
-    username: string,
-    first_name: string,
-    last_name: string,
-    email: string,
+    id?: number,
+    username?: string,
+    first_name?: string,
+    last_name?: string,
+    email?: string,
 }
 
 
@@ -41,9 +41,10 @@ export async function Registration({ email, username, password }: RegistrationTy
     })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(text)
-                })
+                return response.status
+                // return response.text().then(text => {
+                //     throw new Error(text)
+                // })
 
             }
 
@@ -73,9 +74,11 @@ export async function Authorization({ email, password }: RegistrationType): Prom
         .then(response => {
 
             if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(text)
-                })
+                return response.status
+                //return response.text().then(text => {
+
+                //     throw new Error(text)
+                // })
             }
 
             return response.json();
@@ -117,6 +120,18 @@ export async function refreshToken(refresh: string | undefined): Promise<TokenTy
             "content-type": "application/json",
         },
     })
-        .then((response) => response.json())
+        .then(response => {
 
+            if (!response.ok) {
+                console.log("Ошибка");
+                return response.status
+
+                //return response.text().then(text => {
+
+                //     throw new Error(text)
+                // })
+            }
+
+            return response.json();
+        })
 }

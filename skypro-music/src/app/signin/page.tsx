@@ -24,7 +24,7 @@ function Signin() {
 
   const [isConformedPass, setIsConformedPass] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
-  const [textErrPass, setTextErrPass] = useState("");
+  const [textError, setTextError] = useState("");
   const isUserAuth = useAppSelector((store) => store.auth.isAuthState);
 
   console.log("Состояние пользователя:" + isUserAuth);
@@ -35,14 +35,28 @@ function Signin() {
     loginData.email === "" ? setIsEmail(false) : setIsEmail(true);
     loginData.password === "" ? setIsConformedPass(false) : setIsConformedPass(true)
     console.log("Login data: " + loginData.email + " " + loginData.password);
-    localStorage.setItem('user', JSON.stringify(loginData)); // Помещаем данные пользователя в 
+     // Помещаем данные пользователя в 
     // локальное хранилище localStorage 
     await Authorization(loginData).then(response => {
 
-      if (response) {
+      if (response == '401') {
+
+        setTextError("Такой пользователь не зарегистрирован либо логин или пароль введены не правильно")
+        return (console.log("Ошибка. Ответ авторизации:" + response))
+      } else if (response == '500') {
+
+        setTextError("Проблема с сервером")
+        return (console.log("Ошибка. Ответ авторизации:" + response))
+      } else if (response == '400') {
+
+        setTextError("Возможно не передан логин или пароль")
+        return (console.log("Ошибка. Ответ авторизации:" + response))
+      } else {
+        setTextError("")
+        localStorage.setItem('user', JSON.stringify(response));
         dispatch(setUserData(response));
         dispatch(setAuthState());
-         
+
         getToken(loginData).then(token => {
           if (token) {
             dispatch(setToken(token));
@@ -52,8 +66,8 @@ function Signin() {
           }
         });
         router.push("/tracks");
-      } else {
-        return (console.log("Ошибка. Ответ авторизации:" + response))
+
+
       }
 
     });
@@ -109,7 +123,8 @@ function Signin() {
                 onChange={onPasswordChange}
               />
               <div className={styles.modalErrText}>
-                {isConformedPass ? "" : "Введите пароль"}
+                {isConformedPass ? "" : "Введите пароль. "}
+                {textError}
               </div>
               <button className={styles.modalBtnEnter}
                 onClick={(e) => setAuth(e, loginData)}
